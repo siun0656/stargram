@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>인권스타그램</title>
+<style>
+:root{
+  --bg:#fafafa;--card:#fff;--line:#e6e6e6;--text:#262626;--sub:#8e8e8e;--pink:#dc2743;--blue:#0095f6;
+  --grad:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+button{font-family:inherit;cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;white-space:nowrap}
+.hr{display:flex;align-items:center;gap:8px;min-width:0}
+.mode{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.mode.local{color:#c2410c;background:#fff7ed;border:1px solid #fed7aa;padding:3px 8px;border-radius:99px}
+.mode.admin{color:#fff;background:#dc2743;padding:3px 8px;border-radius:99px}
+.mode.cls{color:#00376b;background:#e0f0ff;padding:3px 8px;border-radius:99px;font-weight:700}
+.exit{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:700;color:var(--text);white-space:nowrap}
+main{max-width:600px;margin:0 auto;padding:12px 12px 90px}
+nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-top:1px solid var(--line);justify-content:center;padding-bottom:env(safe-area-inset-bottom,0)}
+nav button{flex:1;max-width:300px;border:0;background:none;padding:10px 0 8px;font-size:13px;color:var(--sub);font-weight:700}
+nav button .ic{display:block;font-size:22px;margin-bottom:2px}
+nav button.on{color:var(--text)}
+/* home / teacher */
+.hero{text-align:center;padding:26px 10px 18px}
+.hero .big{font-size:54px}
+.hero h1{margin:4px 0;font-size:30px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:0;color:var(--sub);font-size:14px}
+.gap{margin-top:12px}
+.btn{width:100%;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:800;color:#fff;background:var(--blue);margin-top:10px}
+.btn.dark{background:#374151}
+.btn.sub{background:#f1f1f1;color:var(--text)}
+.cls{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;flex-wrap:wrap}
+.cls .cn{font-weight:800;font-size:16px}
+.cls .cc{font-size:22px;font-weight:900;letter-spacing:3px;color:var(--pink)}
+.cls .cb{display:flex;gap:6px;flex-wrap:wrap}
+.cls .cb button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font-size:13px;font-weight:700}
+.cls .cb .go{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cls .cb .dg{background:#fee2e2;color:#b91c1c;border-color:#fecaca}
+h3.sec{margin:18px 2px 8px;font-size:15px}
+.cls .sm{font-size:12px;color:var(--sub);margin-top:2px}
+.stats{display:flex;gap:10px;margin:8px 0 2px}
+.stat{flex:1;text-align:center;background:#fff;border:1px solid #fed7aa;border-radius:12px;padding:10px;font-size:13px;color:var(--sub);font-weight:700}
+.stat .n{font-size:30px;font-weight:900;color:var(--pink)}
+/* feed */
+.bar{display:flex;gap:8px;margin:4px 0 12px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--sub)}
+.chip.on{background:var(--text);color:#fff;border-color:var(--text)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.ch{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #dc2743}
+.ch .nm{font-weight:800;font-size:14px}
+.ch .tm{font-size:11px;color:var(--sub)}
+.hot{margin-left:auto;font-size:12px;font-weight:800;color:#fff;background:var(--grad);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.del{margin-left:auto;border:0;background:#fee2e2;color:#b91c1c;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.hot+.del{margin-left:6px}
+.pic{position:relative;background:#fff;line-height:0;user-select:none}
+.pic img{width:100%;height:auto;display:block;aspect-ratio:4/3;object-fit:cover}
+.pop{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px;pointer-events:none;opacity:0}
+.pop.go{animation:pop .7s ease-out}
+@keyframes pop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.2);opacity:1}60%{transform:scale(1);opacity:1}100%{transform:scale(1.1);opacity:0}}
+.act{display:flex;align-items:center;gap:6px;padding:8px 10px 0}
+.heart{border:0;background:none;font-size:27px;padding:2px 4px;line-height:1;transition:transform .15s}
+.heart:active{transform:scale(1.3)}
+.heart.on{animation:beat .4s}
+@keyframes beat{50%{transform:scale(1.35)}}
+.lk{font-weight:800;font-size:14px}
+.body{padding:6px 12px 4px;font-size:14px;line-height:1.6;word-break:break-word}
+.lbl{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:#6366f1;border-radius:6px;padding:1px 6px;margin-right:5px;vertical-align:1px}
+.lbl.y{background:#f59e0b}
+.lnk{display:inline-flex;align-items:center;gap:6px;margin:6px 12px 2px;padding:8px 12px;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tags{padding:2px 12px 6px;font-size:14px;color:#00376b;line-height:1.7;font-weight:600}
+.cms{padding:4px 12px 2px;font-size:13px;line-height:1.55;word-break:break-word}
+.cms .c b{margin-right:6px}
+.cdel{border:0;background:#fee2e2;color:#b91c1c;border-radius:6px;font-size:11px;font-weight:800;margin-left:6px;padding:1px 6px}
+.more{border:0;background:none;color:var(--sub);font-size:13px;padding:2px 12px}
+.cin{display:flex;border-top:1px solid var(--line);margin-top:8px}
+.cin input{flex:1;border:0;padding:12px;font-size:14px;font-family:inherit;outline:none;min-width:0}
+.cin button{border:0;background:none;color:var(--blue);font-weight:800;font-size:14px;padding:0 14px}
+.empty{text-align:center;color:var(--sub);padding:50px 20px;line-height:1.8}
+.empty .big{font-size:56px}
+/* wizard */
+.wz{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.wz h2{margin:2px 0 4px;font-size:20px}
+.dots{display:flex;gap:6px;margin-bottom:14px}
+.dots i{flex:1;height:6px;border-radius:99px;background:var(--line)}
+.dots i.on{background:var(--grad)}
+.stt{font-size:12px;font-weight:800;color:var(--pink)}
+.hint{font-size:13px;color:var(--sub);margin:0 0 12px;line-height:1.55}
+.step{display:none}.step.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+input.t,textarea.t{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit;outline:none;resize:none}
+input.t:focus,textarea.t:focus{border-color:var(--pink)}
+.avrow{display:flex;gap:14px;align-items:center;margin:4px 0 12px}
+.emojis{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:10px}
+.emojis button{border:2px solid transparent;background:#f4f4f5;border-radius:10px;font-size:22px;padding:5px 0}
+.emojis button.on{border-color:var(--pink);background:#fff0f3}
+.cols{display:flex;gap:8px;flex-wrap:wrap}
+.cols button{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line)}
+.cols button.on{box-shadow:0 0 0 3px var(--text)}
+.cv-wrap{border:2px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;line-height:0}
+canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;cursor:crosshair}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.tools .cols button{width:26px;height:26px}
+.tb{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px;font-size:13px;font-weight:700}
+.tb.on{background:var(--text);color:#fff}
+.tb.photo{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.tools input[type=range]{flex:1;min-width:90px}
+.sug{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.sug button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-size:14px;font-weight:700;color:#00376b}
+.sug button.on{background:#e0f0ff;border-color:var(--blue)}
+.addrow{display:flex;gap:8px}
+.addrow button{border:0;background:var(--blue);color:#fff;border-radius:10px;padding:0 16px;font-weight:800;font-size:14px;white-space:nowrap}
+.sel{min-height:34px;margin-top:6px;font-weight:700;color:#00376b}
+.q{font-size:14px;font-weight:800;margin:12px 0 6px}
+.opt{font-size:11px;color:var(--sub);font-weight:700;margin-left:4px}
+.nav{display:flex;gap:10px;margin-top:16px}
+.nav button{flex:1;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:800}
+.prev{background:#f1f1f1;color:var(--text)}
+.next{background:var(--blue);color:#fff}
+.next.go{background:var(--grad)}
+.err{color:#dc2626;font-size:13px;font-weight:700;min-height:18px;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#262626;color:#fff;padding:11px 20px;border-radius:99px;font-weight:700;font-size:14px;opacity:0;transition:.3s;z-index:50;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">인권스타그램</div>
+  <div class="hr">
+    <span class="mode" id="mode"></span>
+    <button class="exit" id="btnExit" style="display:none"></button>
+  </div>
+</header>
+
+<main>
+  <!-- 처음 화면 -->
+  <section id="viewHome">
+    <div class="hero"><div class="big">📸</div><h1>인권스타그램</h1><p>우리 주변에서 인권을 존중하는 모습을 소개해요</p></div>
+    <div class="wz">
+      <h2>🏫 우리 반 입장하기</h2>
+      <p class="hint">선생님이 알려 준 반 코드를 입력해요.</p>
+      <input class="t" id="joinCode" maxlength="10" placeholder="반 코드 (예: K7P2X)" autocomplete="off" style="text-align:center;font-size:20px;font-weight:800;letter-spacing:3px">
+      <button class="btn" id="btnJoin">입장하기</button>
+      <div class="err" id="joinErr"></div>
+    </div>
+    <div class="wz gap">
+      <h2>👩‍🏫 교사 로그인</h2>
+      <p class="hint">반을 만들고 게시물·댓글을 관리할 수 있어요.</p>
+      <input class="t" id="tCode" type="password" inputmode="numeric" maxlength="12" placeholder="교사 코드" autocomplete="off">
+      <button class="btn dark" id="btnTeacher">교사로 들어가기</button>
+      <div class="err" id="tErr"></div>
+    </div>
+  </section>
+
+  <!-- 교사 홈 -->
+  <section id="viewTeacher" style="display:none">
+    <div class="wz" id="adminBox" style="display:none;margin-bottom:12px;background:#fff7ed;border-color:#fed7aa">
+      <h2>📊 관리자 현황</h2>
+      <div class="stats">
+        <div class="stat"><div class="n" id="stClasses">0</div>전체 학급</div>
+        <div class="stat"><div class="n" id="stPosts">…</div>전체 게시물</div>
+      </div>
+      <button class="btn sub" id="stRefresh">🔄 새로고침</button>
+    </div>
+    <div class="wz">
+      <h2>➕ 새 반 만들기</h2>
+      <p class="hint">반 이름을 적고 만들기를 누르면 학생들이 입장할 반 코드가 생겨요.</p>
+      <input class="t" id="cName" maxlength="20" placeholder="반 이름 (예: 5학년 6반)">
+      <div class="addrow gap">
+        <input class="t" id="cCode" maxlength="10" placeholder="반 코드" style="font-weight:800;letter-spacing:2px">
+        <button id="cGen">🎲 새 코드</button>
+      </div>
+      <button class="btn" id="cMake">반 만들기</button>
+      <div class="err" id="cErr"></div>
+    </div>
+    <h3 class="sec">🏫 만든 반 목록</h3>
+    <div id="clsList"></div>
+    <button class="btn sub" id="tOut">교사 로그아웃</button>
+  </section>
+
+  <!-- 피드 -->
+  <section id="viewFeed" style="display:none">
+    <div class="bar">
+      <button class="chip on" data-sort="new">🕒 최신순</button>
+      <button class="chip" data-sort="hot">🔥 인기순</button>
+    </div>
+    <div id="feed"></div>
+  </section>
+
+  <!-- 다른 반 구경: 반 목록 -->
+  <section id="viewOthers" style="display:none">
+    <h3 class="sec" style="margin-top:4px">🌏 다른 반 인권스타그램 구경하기</h3>
+    <p class="hint">다른 반 친구들은 어떤 인권 존중 모습을 소개했을까요? 마음에 드는 게시물에 ♥만 누를 수 있어요. (댓글은 우리 반에서만!)</p>
+    <div id="othersList"></div>
+  </section>
+
+  <!-- 다른 반 구경: 피드 -->
+  <section id="viewOther" style="display:none">
+    <div class="bar" style="align-items:center"><button class="chip" id="otherBack">← 다른 반 목록</button><span class="mode cls" id="otherTitle"></span></div>
+    <div class="bar">
+      <button class="chip on" data-osort="new">🕒 최신순</button>
+      <button class="chip" data-osort="hot">🔥 인기순</button>
+    </div>
+    <div id="otherFeed"></div>
+  </section>
+
+  <!-- 올리기 -->
+  <section id="viewPost" style="display:none">
+    <div class="wz">
+      <div class="dots" id="dots"><i></i><i></i><i></i><i></i><i></i></div>
+
+      <div class="step" data-s="0">
+        <div class="stt">STEP 1</div>
+        <h2>아이디와 프로필 사진 정하기</h2>
+        <p class="hint">실명 대신 멋진 별명을 써요. (2~10글자)</p>
+        <div class="avrow">
+          <div id="avPrev"></div>
+          <input class="t" id="uid" maxlength="10" placeholder="나의 아이디">
+        </div>
+        <div class="emojis" id="emojis"></div>
+        <div class="cols" id="avcols"></div>
+      </div>
+
+      <div class="step" data-s="1">
+        <div class="stt">STEP 2</div>
+        <h2>인권을 존중하는 모습 그리기</h2>
+        <p class="hint">직접 그리거나, 📷 사진을 불러와서 그 위에 설명을 그려도 좋아요. 다른 사람의 얼굴이 크게 나온 사진은 올리지 않아요.</p>
+        <div class="cv-wrap"><canvas id="cv" width="800" height="600"></canvas></div>
+        <div class="tools">
+          <div class="cols" id="pen"></div>
+          <button class="tb" id="eraser">🧽 지우개</button>
+          <button class="tb" id="undo">↩ 되돌리기</button>
+          <button class="tb" id="clr">🗑 모두 지우기</button>
+          <button class="tb photo" id="photoBtn">📷 사진 불러오기</button>
+          <input type="file" id="photoIn" accept="image/*" style="display:none">
+          <input type="range" id="sz" min="2" max="30" value="6">
+        </div>
+      </div>
+
+      <div class="step" data-s="2">
+        <div class="stt">STEP 3</div>
+        <h2>관심을 끄는 해시태그 만들기</h2>
+        <p class="hint">추천 해시태그를 누르거나 직접 만들어 보세요. (최대 5개)</p>
+        <div class="sug" id="sug"></div>
+        <div class="addrow">
+          <input class="t" id="tagIn" maxlength="12" placeholder="나만의 해시태그 (# 없이)">
+          <button id="tagAdd">추가</button>
+        </div>
+        <div class="sel" id="tagSel"></div>
+      </div>
+
+      <div class="step" data-s="3">
+        <div class="stt">STEP 4</div>
+        <h2>소개하는 글 쓰기</h2>
+        <div class="q"><span class="lbl">누구의 어떤 인권?</span></div>
+        <textarea class="t" id="who" rows="3" maxlength="150" placeholder="예) 휠체어를 타는 사람이 편하게 이동할 수 있는 경사로예요."></textarea>
+        <div class="q"><span class="lbl y">소개하는 이유</span></div>
+        <textarea class="t" id="why" rows="3" maxlength="150" placeholder="예) 누구나 차별받지 않고 이동할 권리가 있기 때문이에요."></textarea>
+        <div class="q">🔗 참고 링크 <span class="opt">(선택)</span></div>
+        <input class="t" id="link" maxlength="300" inputmode="url" placeholder="https://... (기사, 영상 등)">
+      </div>
+
+      <div class="step" data-s="4">
+        <div class="stt">STEP 5</div>
+        <h2>미리 보고 올리기</h2>
+        <p class="hint">올리면 친구들이 ♥ 와 댓글을 남길 수 있어요. 인기 게시물에 도전!</p>
+        <div id="prevCard"></div>
+      </div>
+
+      <div class="err" id="err"></div>
+      <div class="nav">
+        <button class="prev" id="btnPrev">이전</button>
+        <button class="next" id="btnNext">다음</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav id="nav">
+  <button id="tabFeed" class="on"><span class="ic">🏠</span>인권 피드</button>
+  <button id="tabPost"><span class="ic">➕</span>게시물 올리기</button>
+  <button id="tabOthers"><span class="ic">🌏</span>다른 반 구경</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+/* =====================================================
+   ★ 설정 (선생님이 바꾸는 곳)
+   ===================================================== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBKnvmdFG7A2PP8FCmTSgDLVjCf5FJ34_I",
+  authDomain: "math30-163fd.firebaseapp.com",
+  databaseURL: "https://math30-163fd-default-rtdb.firebaseio.com",
+  projectId: "math30-163fd",
+  storageBucket: "math30-163fd.firebasestorage.app",
+  messagingSenderId: "345277070711",
+  appId: "1:345277070711:web:5fb50e1fc1409fa8e9b572"
+};
+const DB_ROOT = "humanrights-insta";   // Firebase 안의 저장 위치 (반 정보: classMeta, 게시물: classPosts)
+const TEACHER_CODE = "2656";           // 교사 코드
+const ADMIN_CODE = "010205";           // 관리자 코드 (교사 기능 + 전체 학급·게시물 수 현황)
+const MAX_POSTS = 60;                  // 반마다 최근 게시물 몇 개까지 불러올지
+
+/* ---------- 유틸 ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+function ssSet(k, v) { try { if (v == null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
+function withTimeout(p, ms) { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms || 8000))]); }
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 2300); }
+function ago(ts) {
+  const s = Math.max(1, (Date.now() - ts) / 1000);
+  if (s < 60) return "방금 전";
+  if (s < 3600) return Math.floor(s / 60) + "분 전";
+  if (s < 86400) return Math.floor(s / 3600) + "시간 전";
+  return Math.floor(s / 86400) + "일 전";
+}
+function genCode() { const c = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; let s = ""; for (let i = 0; i < 5; i++) s += c[Math.floor(Math.random() * c.length)]; return s; }
+const cleanCode = v => String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+function normLink(v) {   // '' = 없음, null = 잘못된 주소, 문자열 = 올바른 주소
+  v = String(v || "").trim(); if (!v) return "";
+  if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+  try { const u = new URL(v); if (!/^https?:$/.test(u.protocol) || !u.hostname.includes(".") || u.href.length > 300) return null; return u.href; } catch (e) { return null; }
+}
+
+/* ---------- 비속어 필터 ----------
+   아이디·해시태그·글·댓글에 아래 말이 들어 있으면 올라가지 않아요.
+   말을 더하거나 빼려면 목록만 고치면 돼요. */
+const BAD_WORDS = [   // 문장 어디에 들어 있어도 막는 말 (숫자·기호로 숨겨도 막아요: 시1발, 시.발)
+  "씨발","시발","씨바","씨팔","시팔","시ㅂ","씨ㅂ","ㅅ발","ㅆ발","병신","븅신","빙신","병ㅅ","ㅂ신","등신","지랄","좆","존나","썅","염병",
+  "개새끼","개색기","개쌔끼","씹새","씹쌔","씹할","엿먹","느금","니미","니애미","애미","패드립","꺼져","닥쳐","닥치라","죽어라","죽여버","뒤져","뒈져",
+  "미친놈","미친년","미친새끼","찐따","애자","정박아","저능아","맘충","틀딱","한남충","김치녀","된장녀","급식충","섹스","야동",
+  "게이","호모","줴줴이","야르","fuck","shit","bitch"
+];
+const BAD_TIGHT = ["씨발","시발","씨팔","시팔","병신","지랄","개새끼","좆","썅"];   // 한 글자씩 띄어 써도 막는 말 (시 발, 병 신)
+const BAD_JAMO = ["ㅅㅂ","ㅆㅂ","ㅂㅅ","ㅄ","ㅈㄹ","ㅁㅊ","ㄲㅈ","ㄷㅊ","ㅈㄴ","ㄴㄱㅁ","ㅅㄲ"];   // 초성 줄임말
+const BAD_ALLOW = ["시발점","시발역","시발택시"];   // 괜찮은 낱말 (비속어 검사에서 제외)
+function isBad(text) {
+  let t = String(text || "").toLowerCase().normalize("NFC");
+  BAD_ALLOW.forEach(a => { t = t.split(a).join(" "); });
+  const loose = t.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣa-z\s]/g, "");
+  const tight = loose.replace(/\s+/g, "");
+  const toks = loose.split(/\s+/).filter(Boolean);
+  for (let i = 0; i < toks.length; i++) {
+    let j = "";
+    for (let k = i; k < Math.min(i + 5, toks.length); k++) { j += toks[k]; if (k > i && BAD_TIGHT.includes(j)) return true; }
+  }
+  return BAD_WORDS.some(w => loose.includes(w)) || BAD_JAMO.some(j => tight.includes(j));
+}
+const BAD_MSG = "바르고 고운 말을 써 주세요. 🙏 (고운 말이 아닌 표현이 들어 있어요)";
+
+/* ---------- 저장소 (Firebase / 연습용 로컬 자동 전환) ---------- */
+let store, REMOTE = false;
+(function initStore() {
+  if (FIREBASE_CONFIG.databaseURL && typeof firebase !== "undefined") {
+    try {
+      const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+      const root = firebase.database(app).ref(DB_ROOT);
+      const pp = (c, id) => root.child("classPosts/" + c + (id ? "/" + id : ""));
+      REMOTE = true;
+      store = {
+        getClass: c => withTimeout(root.child("classMeta/" + c).once("value")).then(s => s.val()),
+        listClasses: cb => { const r = root.child("classMeta"); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
+        createClass: (c, meta) => withTimeout(root.child("classMeta/" + c).transaction(cur => cur === null ? meta : undefined)).then(r => r.committed),
+        deleteClass: c => Promise.all([root.child("classMeta/" + c).remove(), pp(c).remove()]),
+        subscribe: (c, cb) => { const r = pp(c).limitToLast(MAX_POSTS); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
+        add: (c, p) => pp(c).push(p),
+        like: (c, id, d) => pp(c, id + "/likes").transaction(v => Math.max(0, (v || 0) + d)),
+        comment: (c, id, cm) => pp(c, id + "/comments").push(cm),
+        removePost: (c, id) => pp(c, id).remove(),
+        removeComment: (c, id, cid) => pp(c, id + "/comments/" + cid).remove(),
+        countPosts: c => withTimeout(fetch(FIREBASE_CONFIG.databaseURL.replace(/\/$/, "") + "/" + DB_ROOT + "/classPosts/" + c + ".json?shallow=true").then(r => r.json())).then(o => o ? Object.keys(o).length : 0)
+      };
+      return;
+    } catch (e) { console.error(e); }
+  }
+  /* 연습 모드: 이 기기 안에서만 저장 */
+  const KEY = "insta_localdb"; let L = [];
+  const ld = () => { const o = lsGet(KEY, null) || {}; o.classMeta = o.classMeta || {}; o.classPosts = o.classPosts || {}; return o; };
+  const sv = o => { if (!lsSet(KEY, o)) toast("저장 공간이 부족해요"); L.forEach(l => l.fire()); };
+  const sub = (fire) => { const l = { fire }; L.push(l); fire(); return () => { L = L.filter(x => x !== l); }; };
+  store = {
+    getClass: c => Promise.resolve(ld().classMeta[c] || null),
+    listClasses: cb => sub(() => cb(ld().classMeta)),
+    createClass: (c, meta) => { const o = ld(); if (o.classMeta[c]) return Promise.resolve(false); o.classMeta[c] = meta; sv(o); return Promise.resolve(true); },
+    deleteClass: c => { const o = ld(); delete o.classMeta[c]; delete o.classPosts[c]; sv(o); return Promise.resolve(); },
+    subscribe: (c, cb) => sub(() => cb(ld().classPosts[c] || {})),
+    add: (c, p) => { const o = ld(); (o.classPosts[c] = o.classPosts[c] || {})["p" + Date.now() + Math.random().toString(36).slice(2, 5)] = p; sv(o); return Promise.resolve(); },
+    like: (c, id, d) => { const o = ld(), p = (o.classPosts[c] || {})[id]; if (p) p.likes = Math.max(0, (p.likes || 0) + d); sv(o); return Promise.resolve(); },
+    comment: (c, id, cm) => { const o = ld(), p = (o.classPosts[c] || {})[id]; if (p) { p.comments = p.comments || {}; p.comments["c" + Date.now() + Math.random().toString(36).slice(2, 5)] = cm; } sv(o); return Promise.resolve(); },
+    removePost: (c, id) => { const o = ld(); if (o.classPosts[c]) delete o.classPosts[c][id]; sv(o); return Promise.resolve(); },
+    removeComment: (c, id, cid) => { const o = ld(), p = (o.classPosts[c] || {})[id]; if (p && p.comments) delete p.comments[cid]; sv(o); return Promise.resolve(); },
+    countPosts: c => Promise.resolve(Object.keys(ld().classPosts[c] || {}).length)
+  };
+})();
+
+/* ---------- 상태 ---------- */
+let isAdmin = ssGet("insta_admin") === "1";
+let teacher = ssGet("insta_teacher") === "1" || isAdmin;
+let cls = null;                       // {code, name}
+let current = "home";
+let posts = {};
+let sortMode = "new";
+let unsubPosts = null, unsubClasses = null, unsubOthers = null, unsubOther = null;
+let liked = new Set(lsGet("insta_liked", []));
+let expanded = new Set();
+let profile = lsGet("insta_profile", null);   // {id, emoji, color}
+let draft = { emoji: "🐻", color: "#fde68a", tags: [], drawn: false };
+if (profile) { draft.emoji = profile.emoji; draft.color = profile.color; }
+const admin = () => teacher && !!cls;         // 반 안에서 교사일 때 삭제 가능
+
+/* ---------- 화면 전환 ---------- */
+function setMode() {
+  const m = $("mode"); let t = "", c = "mode";
+  if (cls) {
+    if (teacher) { t = (isAdmin ? "관리자 · " : "교사 · ") + cls.name + " · 코드 " + cls.code; c = "mode admin"; }
+    else { t = "🏫 " + cls.name; c = "mode cls"; }
+  } else if (teacher) { t = isAdmin ? "관리자 모드" : "교사 모드"; c = "mode admin"; }
+  if (!REMOTE) { t += (t ? " · " : "") + "연습 모드(이 기기만)"; if (!cls && !teacher) c = "mode local"; }
+  m.className = c; m.textContent = t;
+  const ex = $("btnExit");
+  const inCls = ["feed", "post", "others", "other"].includes(current);
+  ex.style.display = inCls ? "" : "none";
+  ex.textContent = teacher ? "← 반 목록" : "반 나가기";
+}
+function showView(v) {
+  current = v;
+  ["Home", "Teacher", "Feed", "Post", "Others", "Other"].forEach(n => { $("view" + n).style.display = n.toLowerCase() === v ? "" : "none"; });
+  $("nav").style.display = ["feed", "post", "others", "other"].includes(v) ? "flex" : "none";
+  $("tabFeed").classList.toggle("on", v === "feed");
+  $("tabPost").classList.toggle("on", v === "post");
+  $("tabOthers").classList.toggle("on", v === "others" || v === "other");
+  if (v !== "others" && unsubOthers) { unsubOthers(); unsubOthers = null; }
+  if (v !== "other" && unsubOther) { unsubOther(); unsubOther = null; }
+  setMode(); window.scrollTo(0, 0);
+}
+
+/* ---------- 처음 화면: 학생 입장 / 교사 로그인 ---------- */
+$("joinCode").addEventListener("input", e => { e.target.value = cleanCode(e.target.value); });
+$("joinCode").addEventListener("keydown", e => { if (e.key === "Enter") $("btnJoin").click(); });
+$("tCode").addEventListener("keydown", e => { if (e.key === "Enter") $("btnTeacher").click(); });
+
+$("btnJoin").onclick = () => {
+  const code = cleanCode($("joinCode").value);
+  if (code.length < 3) { $("joinErr").textContent = "반 코드를 입력해 주세요."; return; }
+  $("joinErr").textContent = "확인하는 중...";
+  joinClass(code, false);
+};
+function joinClass(code, silent) {
+  store.getClass(code).then(meta => {
+    if (!meta) {
+      if (silent) { lsSet("insta_class", null); showView("home"); }
+      else $("joinErr").textContent = "반 코드를 찾을 수 없어요. 코드를 다시 확인해 주세요.";
+      return;
+    }
+    cls = { code, name: meta.name };
+    if (!teacher) lsSet("insta_class", cls);
+    $("joinErr").textContent = "";
+    enterClass();
+  }).catch(() => {
+    if (silent) showView("home");
+    else $("joinErr").textContent = "연결이 불안정해요. 잠시 뒤에 다시 시도해 주세요.";
+  });
+}
+$("btnTeacher").onclick = () => {
+  const v = $("tCode").value.trim();
+  if (v === TEACHER_CODE || v === ADMIN_CODE) {
+    teacher = true; ssSet("insta_teacher", "1");
+    isAdmin = (v === ADMIN_CODE); ssSet("insta_admin", isAdmin ? "1" : null);
+    $("tCode").value = ""; $("tErr").textContent = "";
+    openTeacherHome();
+  } else $("tErr").textContent = "교사 코드가 맞지 않아요.";
+};
+
+/* ---------- 교사 홈: 반 만들기 / 목록 ---------- */
+function openTeacherHome() {
+  if (unsubPosts) { unsubPosts(); unsubPosts = null; }
+  cls = null; posts = {};
+  if (!$("cCode").value) $("cCode").value = genCode();
+  $("adminBox").style.display = isAdmin ? "" : "none";
+  if (unsubClasses) unsubClasses();
+  unsubClasses = store.listClasses(renderClasses);
+  showView("teacher");
+}
+let lastClasses = {}, statTok = 0;
+function updateAdminStats(arr) {
+  const tok = ++statTok;
+  $("adminBox").style.display = "";
+  $("stClasses").textContent = arr.length;
+  $("stPosts").textContent = "…";
+  Promise.all(arr.map(([code]) => store.countPosts(code).catch(() => null).then(n => {
+    if (tok !== statTok) return 0;
+    const el = $("clsList").querySelector('[data-cnt="' + code + '"]');
+    if (el) el.textContent = n == null ? "?" : n;
+    return n || 0;
+  }))).then(ns => { if (tok === statTok) $("stPosts").textContent = ns.reduce((a, b) => a + b, 0); });
+}
+$("stRefresh").onclick = () => renderClasses(lastClasses);
+function renderClasses(o) {
+  lastClasses = o || {};
+  const arr = Object.entries(lastClasses).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
+  $("clsList").innerHTML = arr.length ? arr.map(([code, m]) => `
+    <div class="cls"><div><div class="cn">${esc(m.name)}</div><div class="cc">${esc(code)}</div>
+    <div class="sm">${m.ts ? new Date(m.ts).toLocaleDateString("ko-KR") + " 생성" : ""}${isAdmin ? ` · 게시물 <b data-cnt="${esc(code)}">…</b>개` : ""}</div></div>
+    <div class="cb" data-code="${esc(code)}" data-name="${esc(m.name)}">
+      <button class="go" data-a="in">입장</button><button data-a="cp">코드 복사</button><button class="dg" data-a="rm">삭제</button>
+    </div></div>`).join("") : `<div class="empty"><div class="big">🏫</div>아직 만든 반이 없어요.<br>위에서 첫 반을 만들어 보세요!</div>`;
+  if (isAdmin) updateAdminStats(arr);
+}
+$("clsList").addEventListener("click", e => {
+  const b = e.target.closest("[data-a]"); if (!b) return;
+  const box = b.closest(".cb"); const code = box.dataset.code, name = box.dataset.name;
+  if (b.dataset.a === "in") { cls = { code, name }; enterClass(); }
+  else if (b.dataset.a === "cp") {
+    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast("반 코드 " + code + " 복사했어요")).catch(() => toast("반 코드: " + code));
+  } else if (b.dataset.a === "rm") {
+    if (confirm("'" + name + "' 반과 올라온 게시물을 모두 삭제할까요?\n되돌릴 수 없어요.")) store.deleteClass(code).then(() => toast("반을 삭제했어요"));
+  }
+});
+$("cGen").onclick = () => { $("cCode").value = genCode(); };
+$("cCode").addEventListener("input", e => { e.target.value = cleanCode(e.target.value); });
+$("cMake").onclick = () => {
+  const name = $("cName").value.trim(), code = cleanCode($("cCode").value);
+  if (!name) { $("cErr").textContent = "반 이름을 적어 주세요."; return; }
+  if (code.length < 3) { $("cErr").textContent = "반 코드는 영어·숫자 3글자 이상이에요."; return; }
+  $("cErr").textContent = "만드는 중...";
+  store.createClass(code, { name, ts: Date.now() }).then(ok => {
+    if (!ok) { $("cErr").textContent = "이미 있는 코드예요. 🎲 새 코드를 눌러 주세요."; return; }
+    $("cErr").textContent = ""; $("cName").value = ""; $("cCode").value = genCode();
+    toast("✅ '" + name + "' 반을 만들었어요. 코드: " + code);
+  }).catch(() => { $("cErr").textContent = "만들지 못했어요. 연결과 Firebase 규칙을 확인해 주세요."; });
+};
+$("tOut").onclick = () => {
+  teacher = false; isAdmin = false; ssSet("insta_teacher", null); ssSet("insta_admin", null);
+  if (unsubClasses) { unsubClasses(); unsubClasses = null; }
+  showView("home");
+};
+$("btnExit").onclick = () => {
+  if (teacher) { openTeacherHome(); return; }
+  if (!confirm("반에서 나갈까요?")) return;
+  lsSet("insta_class", null);
+  if (unsubPosts) { unsubPosts(); unsubPosts = null; }
+  cls = null; posts = {}; showView("home");
+};
+
+/* ---------- 반 입장 ---------- */
+function enterClass() {
+  if (unsubClasses) { unsubClasses(); unsubClasses = null; }
+  if (unsubPosts) unsubPosts();
+  posts = {}; expanded = new Set(); renderFeed(true);
+  unsubPosts = store.subscribe(cls.code, o => { posts = o || {}; renderFeed(); });
+  sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
+  step = 0; showView("feed");
+}
+
+/* ---------- 카드 렌더링 ---------- */
+function avHtml(a, size) {
+  return `<div class="av" style="width:${size}px;height:${size}px;background:${esc(a.color)};font-size:${Math.round(size * .55)}px">${esc(a.emoji)}</div>`;
+}
+function cardHtml(p, id, opt) {
+  opt = opt || {};
+  const likes = p.likes || 0, on = liked.has(id), open = expanded.has(id);
+  const cms = Object.entries(p.comments || {}).map(([cid, c]) => ({ cid, uid: c.uid, text: c.text, ts: c.ts || 0 })).sort((a, b) => a.ts - b.ts);
+  const shown = (open || cms.length <= 3) ? cms : cms.slice(-3);
+  const tags = (p.tags || []).map(t => "#" + esc(t)).join(" ");
+  let linkHtml = "";
+  if (p.link) {
+    let host = ""; try { host = new URL(p.link).hostname.replace(/^www\./, ""); } catch (e) {}
+    if (host) linkHtml = `<a class="lnk" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">🔗 ${esc(host)} 링크 열기</a>`;
+  }
+  const canDel = admin() && !opt.preview && !opt.readonly;
+  return `<article class="card" data-id="${esc(id)}">
+    <div class="ch">${avHtml(p.avatar, 36)}
+      <div><div class="nm">${esc(p.uid)}</div><div class="tm">${opt.preview ? "미리보기" : ago(p.ts)}</div></div>
+      ${opt.hot ? '<span class="hot">🔥 인기 게시물</span>' : ""}
+      ${canDel ? '<button class="del" data-act="del">게시물 삭제</button>' : ""}
+    </div>
+    <div class="pic" data-act="dbl"><img src="${p.img}" alt="인권 존중 그림"><div class="pop">❤️</div></div>
+    ${opt.preview ? "" : `<div class="act">
+      <button class="heart ${on ? "on" : ""}" data-act="like">${on ? "❤️" : "🤍"}</button>
+      <span class="lk">좋아요 ${likes}개</span></div>`}
+    <div class="body">
+      <div><span class="lbl">누구의 어떤 인권?</span>${esc(p.who)}</div>
+      <div style="margin-top:4px"><span class="lbl y">소개하는 이유</span>${esc(p.why)}</div>
+    </div>
+    ${linkHtml}
+    <div class="tags">${tags}</div>
+    ${opt.preview ? "" : `
+      ${cms.length > 3 && !open ? `<button class="more" data-act="more">댓글 ${cms.length}개 모두 보기</button>` : ""}
+      <div class="cms">${shown.map(c => `<div class="c"><b>${esc(c.uid)}</b>${esc(c.text)}${canDel ? `<button class="cdel" data-act="delc" data-cid="${esc(c.cid)}">✕ 삭제</button>` : ""}</div>`).join("")}</div>
+      ${opt.readonly ? '<div style="height:10px"></div>' : '<div class="cin"><input maxlength="60" placeholder="따뜻한 댓글을 남겨 보세요 💬"><button data-act="cm">게시</button></div>'}`}
+  </article>`;
+}
+
+let pendingRender = false;
+function renderFeed(force) {
+  const ae = document.activeElement;
+  if (!force && ae && ae.tagName === "INPUT" && ae.closest("#feed") && ae.value) { pendingRender = true; return; }
+  pendingRender = false;
+  const arr = Object.entries(posts);
+  if (!arr.length) {
+    $("feed").innerHTML = `<div class="empty"><div class="big">📷</div>아직 게시물이 없어요.<br>첫 번째 인권스타그램 주인공이 되어 보세요!</div>`;
+    return;
+  }
+  const maxLike = Math.max(...arr.map(([, p]) => p.likes || 0));
+  arr.sort((a, b) => sortMode === "hot"
+    ? ((b[1].likes || 0) - (a[1].likes || 0)) || (b[1].ts - a[1].ts)
+    : b[1].ts - a[1].ts);
+  $("feed").innerHTML = arr.map(([id, p]) => cardHtml(p, id, { hot: maxLike > 0 && (p.likes || 0) === maxLike })).join("");
+}
+document.addEventListener("focusout", () => { if (pendingRender) setTimeout(() => renderFeed(true), 50); });
+
+/* ---------- 피드 이벤트 ---------- */
+function doLike(id, code, redraw) {
+  const was = liked.has(id);
+  if (was) liked.delete(id); else liked.add(id);
+  lsSet("insta_liked", [...liked]);
+  store.like(code, id, was ? -1 : 1);
+  if (REMOTE) redraw(true);
+}
+function heartPop(card) {
+  const pop = card.querySelector(".pop");
+  pop.classList.remove("go"); void pop.offsetWidth; pop.classList.add("go");
+}
+$("feed").addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || !cls) return;
+  const card = el.closest(".card"); if (!card) return;
+  const id = card.dataset.id, act = el.dataset.act;
+  if (act === "like") { if (!liked.has(id)) heartPop(card); doLike(id, cls.code, renderFeed); }
+  else if (act === "more") { expanded.add(id); renderFeed(true); }
+  else if (act === "del") { if (admin() && confirm("이 게시물을 삭제할까요?")) store.removePost(cls.code, id).then(() => toast("게시물을 삭제했어요")); }
+  else if (act === "delc") { if (admin() && confirm("이 댓글을 삭제할까요?")) store.removeComment(cls.code, id, el.dataset.cid).then(() => toast("댓글을 삭제했어요")); }
+  else if (act === "cm") submitComment(card, id);
+});
+let lastTap = 0;
+$("feed").addEventListener("pointerup", e => {
+  const pic = e.target.closest('[data-act="dbl"]'); if (!pic || !cls) return;
+  const now = Date.now();
+  if (now - lastTap < 350) {
+    const card = pic.closest(".card"), id = card.dataset.id;
+    heartPop(card); if (!liked.has(id)) doLike(id, cls.code, renderFeed);
+  }
+  lastTap = now;
+});
+$("feed").addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.tagName === "INPUT") { const card = e.target.closest(".card"); submitComment(card, card.dataset.id); }
+});
+function submitComment(card, id) {
+  const inp = card.querySelector(".cin input"); const text = inp.value.trim();
+  if (!text) return;
+  if (isBad(text)) { toast(BAD_MSG); return; }
+  const author = teacher ? "👩‍🏫 선생님" : (profile ? profile.id : null);
+  if (!author) { toast("먼저 '게시물 올리기'에서 아이디를 만들어 주세요"); return; }
+  inp.value = "";
+  store.comment(cls.code, id, { uid: author, text, ts: Date.now() });
+  setTimeout(() => renderFeed(true), 30);
+}
+document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click", () => {
+  sortMode = b.dataset.sort;
+  document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x === b));
+  renderFeed(true);
+}));
+
+/* ---------- 다른 반 구경 (보기만 가능) ---------- */
+let othersTok = 0, otherPosts = {}, otherCode = "", otherSort = "new";
+function openOthers() {
+  showView("others");
+  if (unsubOthers) unsubOthers();
+  unsubOthers = store.listClasses(renderOthers);
+}
+function renderOthers(o) {
+  const arr = Object.entries(o || {}).filter(([c]) => !cls || c !== cls.code)
+    .sort((a, b) => String(a[1].name).localeCompare(String(b[1].name), "ko"));
+  if (!arr.length) { $("othersList").innerHTML = `<div class="empty"><div class="big">🌏</div>아직 구경할 다른 반이 없어요.</div>`; return; }
+  $("othersList").innerHTML = arr.map(([code, m]) => `
+    <div class="cls"><div><div class="cn">🏫 ${esc(m.name)}</div><div class="sm">게시물 <b data-ocnt="${esc(code)}">…</b>개</div></div>
+    <div class="cb"><button class="go" data-oc="${esc(code)}" data-on="${esc(m.name)}">구경하기</button></div></div>`).join("");
+  const tok = ++othersTok;
+  arr.forEach(([code]) => store.countPosts(code).catch(() => null).then(n => {
+    if (tok !== othersTok) return;
+    const el = $("othersList").querySelector('[data-ocnt="' + code + '"]');
+    if (el) el.textContent = n == null ? "?" : n;
+  }));
+}
+$("othersList").addEventListener("click", e => {
+  const b = e.target.closest("[data-oc]"); if (b) openOther(b.dataset.oc, b.dataset.on);
+});
+function openOther(code, name) {
+  showView("other");
+  $("otherTitle").textContent = "🏫 " + name;
+  otherCode = code; otherPosts = {}; otherSort = "new";
+  document.querySelectorAll("[data-osort]").forEach(x => x.classList.toggle("on", x.dataset.osort === "new"));
+  renderOther();
+  unsubOther = store.subscribe(code, o => { otherPosts = o || {}; renderOther(); });
+}
+function renderOther() {
+  const arr = Object.entries(otherPosts);
+  if (!arr.length) { $("otherFeed").innerHTML = `<div class="empty"><div class="big">📷</div>아직 올라온 게시물이 없어요.</div>`; return; }
+  const maxLike = Math.max(...arr.map(([, p]) => p.likes || 0));
+  arr.sort((a, b) => otherSort === "hot"
+    ? ((b[1].likes || 0) - (a[1].likes || 0)) || (b[1].ts - a[1].ts)
+    : b[1].ts - a[1].ts);
+  $("otherFeed").innerHTML = arr.map(([id, p]) => cardHtml(p, id, { readonly: true, hot: maxLike > 0 && (p.likes || 0) === maxLike })).join("");
+}
+$("otherBack").onclick = openOthers;
+document.querySelectorAll("[data-osort]").forEach(b => b.addEventListener("click", () => {
+  otherSort = b.dataset.osort;
+  document.querySelectorAll("[data-osort]").forEach(x => x.classList.toggle("on", x === b));
+  renderOther();
+}));
+$("otherFeed").addEventListener("click", e => {
+  const el = e.target.closest('[data-act="like"]'); if (!el || !otherCode) return;
+  const card = el.closest(".card"), id = card.dataset.id;
+  if (!liked.has(id)) heartPop(card);
+  doLike(id, otherCode, renderOther);
+});
+let lastTapO = 0;
+$("otherFeed").addEventListener("pointerup", e => {
+  const pic = e.target.closest('[data-act="dbl"]'); if (!pic || !otherCode) return;
+  const now = Date.now();
+  if (now - lastTapO < 350) {
+    const card = pic.closest(".card"), id = card.dataset.id;
+    heartPop(card); if (!liked.has(id)) doLike(id, otherCode, renderOther);
+  }
+  lastTapO = now;
+});
+
+/* ---------- 탭 ---------- */
+$("tabFeed").onclick = () => { showView("feed"); renderFeed(true); };
+$("tabPost").onclick = () => { showView("post"); showStep(step); };
+$("tabOthers").onclick = openOthers;
+
+/* ---------- 올리기 위자드 ---------- */
+let step = 0;
+const EMOJIS = ["🐻", "🐰", "🦊", "🐼", "🐯", "🐸", "🐧", "🦁", "🐶", "🐱", "🦄", "🐳", "🌈", "⭐", "🍀", "🌻"];
+const BGS = ["#fde68a", "#fecaca", "#bbf7d0", "#bfdbfe", "#e9d5ff", "#fbcfe8", "#fed7aa", "#e5e7eb"];
+const SUG = ["모두의권리", "유니버설디자인", "차별없는세상", "배려", "존중", "함께해요", "장애인권", "어린이권리", "수어", "경사로", "점자블록", "따뜻한말", "양보", "다름을인정해요"];
+const PENS = ["#222222", "#ef4444", "#f97316", "#facc15", "#22c55e", "#0ea5e9", "#6366f1", "#ec4899", "#92400e"];
+
+function buildProfileUI() {
+  $("emojis").innerHTML = EMOJIS.map(e => `<button data-e="${e}" class="${e === draft.emoji ? "on" : ""}">${e}</button>`).join("");
+  $("avcols").innerHTML = BGS.map(c => `<button data-c="${c}" style="background:${c}" class="${c === draft.color ? "on" : ""}"></button>`).join("");
+  $("avPrev").innerHTML = avHtml({ emoji: draft.emoji, color: draft.color }, 64);
+  if (profile && !$("uid").value) $("uid").value = profile.id;
+}
+$("emojis").addEventListener("click", e => { const b = e.target.closest("[data-e]"); if (b) { draft.emoji = b.dataset.e; buildProfileUI(); } });
+$("avcols").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) { draft.color = b.dataset.c; buildProfileUI(); } });
+
+/* 그리기 + 사진 */
+const cv = $("cv"), ctx = cv.getContext("2d");
+let penColor = PENS[0], erase = false, drawing = false, undoStack = [];
+function clearCv() { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height); }
+clearCv();
+$("pen").innerHTML = PENS.map((c, i) => `<button data-p="${c}" style="background:${c}" class="${i === 0 ? "on" : ""}"></button>`).join("");
+$("pen").addEventListener("click", e => {
+  const b = e.target.closest("[data-p]"); if (!b) return;
+  penColor = b.dataset.p; erase = false; $("eraser").classList.remove("on");
+  document.querySelectorAll("#pen button").forEach(x => x.classList.toggle("on", x === b));
+});
+$("eraser").onclick = () => { erase = !erase; $("eraser").classList.toggle("on", erase); };
+function pushUndo() { undoStack.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (undoStack.length > 15) undoStack.shift(); }
+$("undo").onclick = () => { const s = undoStack.pop(); if (s) ctx.putImageData(s, 0, 0); };
+$("clr").onclick = () => { if (confirm("그림(사진)을 모두 지울까요?")) { pushUndo(); clearCv(); draft.drawn = false; } };
+function cpos(e) { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * cv.width / r.width, y: (e.clientY - r.top) * cv.height / r.height }; }
+cv.addEventListener("pointerdown", e => {
+  e.preventDefault(); cv.setPointerCapture(e.pointerId); pushUndo(); drawing = true;
+  ctx.lineCap = ctx.lineJoin = "round";
+  ctx.strokeStyle = erase ? "#ffffff" : penColor;
+  ctx.lineWidth = (+$("sz").value) * (erase ? 2.2 : 1) * (cv.width / 600);
+  const p = cpos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + .01, p.y); ctx.stroke();
+  if (!erase) draft.drawn = true;
+});
+cv.addEventListener("pointermove", e => { if (!drawing) return; e.preventDefault(); const p = cpos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+["pointerup", "pointercancel", "pointerleave"].forEach(t => cv.addEventListener(t, () => { drawing = false; }));
+
+$("photoBtn").onclick = () => $("photoIn").click();
+$("photoIn").addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = "";
+  if (!f) return;
+  if (!/^image\//.test(f.type)) { toast("사진 파일만 불러올 수 있어요"); return; }
+  const url = URL.createObjectURL(f), img = new Image();
+  img.onload = () => {
+    pushUndo(); clearCv();
+    const r = Math.min(cv.width / img.width, cv.height / img.height), w = img.width * r, h = img.height * r;
+    ctx.drawImage(img, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+    draft.drawn = true; URL.revokeObjectURL(url);
+    toast("📷 사진을 불러왔어요. 그 위에 그려도 돼요!");
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); toast("사진을 불러오지 못했어요"); };
+  img.src = url;
+});
+
+/* 해시태그 */
+function renderTags() {
+  const all = [...new Set([...SUG, ...draft.tags])];
+  $("sug").innerHTML = all.map(t => `<button data-t="${esc(t)}" class="${draft.tags.includes(t) ? "on" : ""}">#${esc(t)}</button>`).join("");
+  $("tagSel").textContent = draft.tags.length ? draft.tags.map(t => "#" + t).join(" ") : "선택한 해시태그가 여기에 보여요";
+}
+$("sug").addEventListener("click", e => {
+  const b = e.target.closest("[data-t]"); if (!b) return; const t = b.dataset.t;
+  if (draft.tags.includes(t)) draft.tags = draft.tags.filter(x => x !== t);
+  else if (draft.tags.length >= 5) { toast("해시태그는 최대 5개예요"); return; }
+  else draft.tags.push(t);
+  renderTags();
+});
+function addCustomTag() {
+  const t = $("tagIn").value.replace(/[#\s]/g, "").trim(); if (!t) return;
+  if (isBad(t)) { toast(BAD_MSG); return; }
+  if (draft.tags.length >= 5) { toast("해시태그는 최대 5개예요"); return; }
+  if (!draft.tags.includes(t)) draft.tags.push(t);
+  $("tagIn").value = ""; renderTags();
+}
+$("tagAdd").onclick = addCustomTag;
+$("tagIn").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } });
+
+/* 단계 이동 */
+function showStep(n) {
+  step = n;
+  document.querySelectorAll(".step").forEach(s => s.classList.toggle("on", +s.dataset.s === n));
+  document.querySelectorAll("#dots i").forEach((d, i) => d.classList.toggle("on", i <= n));
+  $("btnPrev").style.visibility = n === 0 ? "hidden" : "visible";
+  $("btnNext").textContent = n === 4 ? "🚀 인권스타그램에 올리기" : "다음";
+  $("btnNext").classList.toggle("go", n === 4);
+  $("err").textContent = "";
+  if (n === 0) buildProfileUI();
+  if (n === 2) renderTags();
+  if (n === 4) $("prevCard").innerHTML = cardHtml(buildPost(), "preview", { preview: true });
+  window.scrollTo(0, 0);
+}
+function buildPost() {
+  const link = normLink($("link").value);
+  const p = {
+    uid: profile ? profile.id : $("uid").value.trim(),
+    avatar: { emoji: draft.emoji, color: draft.color },
+    img: cv.toDataURL("image/jpeg", .6),
+    tags: draft.tags.slice(),
+    who: $("who").value.trim(), why: $("why").value.trim(),
+    ts: Date.now(), likes: 0
+  };
+  if (link) p.link = link;
+  return p;
+}
+function validate(n) {
+  if (n === 0) {
+    const v = $("uid").value.trim();
+    if (v.length < 2) return "아이디를 2글자 이상 적어 주세요.";
+    if (isBad(v)) return BAD_MSG;
+    profile = { id: v, emoji: draft.emoji, color: draft.color }; lsSet("insta_profile", profile);
+  }
+  if (n === 1 && !draft.drawn) return "인권을 존중하는 모습을 그리거나 사진을 불러와 주세요.";
+  if (n === 2 && draft.tags.length < 1) return "해시태그를 1개 이상 골라 주세요.";
+  if (n === 3) {
+    if ($("who").value.trim().length < 5) return "'누구의 어떤 인권'을 5글자 이상 써 주세요.";
+    if ($("why").value.trim().length < 5) return "'소개하는 이유'를 5글자 이상 써 주세요.";
+    if (isBad($("who").value) || isBad($("why").value)) return BAD_MSG;
+    if (normLink($("link").value) === null) return "링크 주소가 올바르지 않아요. (예: https://www.example.com)";
+  }
+  return "";
+}
+$("btnPrev").onclick = () => { if (step > 0) showStep(step - 1); };
+$("btnNext").onclick = () => {
+  const msg = validate(step);
+  if (msg) { $("err").textContent = msg; return; }
+  if (step < 4) { showStep(step + 1); return; }
+  if (!cls) { toast("반에 먼저 입장해 주세요"); return; }
+  const post = buildPost();
+  if ([post.uid, post.who, post.why, ...post.tags].some(isBad)) { $("err").textContent = BAD_MSG; return; }
+  $("btnNext").disabled = true;
+  Promise.resolve(store.add(cls.code, post)).then(() => {
+    $("btnNext").disabled = false;
+    toast("🎉 인권스타그램에 올렸어요!");
+    clearCv(); undoStack = []; draft.drawn = false; draft.tags = [];
+    $("who").value = ""; $("why").value = ""; $("link").value = ""; step = 0;
+    sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
+    showView("feed"); renderFeed(true);
+  }).catch(() => { toast("올리지 못했어요. 다시 시도해 주세요"); $("btnNext").disabled = false; });
+};
+
+/* ---------- 시작 ---------- */
+(function boot() {
+  if (teacher) { openTeacherHome(); return; }
+  const saved = lsGet("insta_class", null);
+  if (saved && saved.code) { showView("home"); joinClass(saved.code, true); }
+  else showView("home");
+})();
+</script>
+</body>
+</html>
