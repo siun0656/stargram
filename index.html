@@ -211,6 +211,29 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
 .rec{font-size:12px;color:var(--sub);font-weight:700}
 .arow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .arow .chip{flex:none}
+/* ===== 글 틀 ===== */
+.tplc{display:flex;gap:12px;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;font-family:inherit}
+.tplc.on{border-color:var(--pink);background:#fff0f5}
+.tic{font-size:26px;line-height:1.2}
+.tbd{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--sub);line-height:1.45}
+.tbd b{font-size:15px;color:var(--text)}
+.tbd em{font-style:normal;font-size:11px;background:#dc2743;color:#fff;border-radius:6px;padding:1px 6px;margin-left:4px;vertical-align:1px}
+.tbd i{font-style:normal;color:#6366f1;font-size:12px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.gt.sw{background:#fde7ea;border-color:#f6cdd3}.gt.pr{background:#e5ecff;border-color:#cbd8fb}.gt.pl{background:#fff3d6;border-color:#f3e1ae}.gt.fr{background:#f3e8ff;border-color:#e2cff8}
+.dh.bad{background:#ffd6dc}.dh.good{background:#d7f5d3}
+.swp .dh:nth-child(2),.swp .dc:nth-child(even){border-left:1px solid #e6e6e6}
+.swp .dc{border-top:1px solid #eee;min-height:0}
+/* ===== 틀 예시 팝업 ===== */
+.modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.mbox{background:#fff;width:100%;max-width:600px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px))}
+@media (min-width:700px){.modal{align-items:center}.mbox{border-radius:20px}}
+.mt{text-align:center;font-size:13px;color:var(--sub);line-height:1.5;margin-bottom:10px}
+.mt b{font-size:18px;color:var(--text)}
+.mq{font-size:20px;font-weight:900;text-align:center;margin:14px 0 10px}
+.mbtns{display:flex;gap:10px}
+.mbtns button{flex:1;border:0;border-radius:12px;padding:13px;font-size:16px;font-weight:800}
+.mbox .card{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -314,7 +337,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
   <!-- 올리기 -->
   <section id="viewPost" style="display:none">
     <div class="wz">
-      <div class="dots" id="dots"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="dots" id="dots"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
       <div class="step" data-s="0">
         <div class="stt">STEP 1</div>
@@ -330,14 +353,21 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
 
       <div class="step" data-s="1">
         <div class="stt">STEP 2</div>
-        <h2>인권을 존중하는 모습 그리기</h2>
-        <p class="hint">그림 스튜디오에서 여러 가지 붓·도형·색칠하기·스티커·글자로 꾸미거나, 📷 사진을 불러와서 그 위에 그려도 좋아요. 다른 사람의 얼굴이 크게 나온 사진은 올리지 않아요.</p>
-        <div class="cv-wrap"><canvas id="cv" width="800" height="600"></canvas></div>
-        <button class="btn" id="openStudio">🎨 그림 스튜디오 열기</button>
+        <h2>어떤 틀로 쓸까요?</h2>
+        <p class="hint">내 글에 어울리는 틀을 골라요. 틀을 누르면 <b>예시</b>가 나와요! 틀 없이 자유롭게 쓸 수도 있어요.</p>
+        <div id="tplList"></div>
       </div>
 
       <div class="step" data-s="2">
         <div class="stt">STEP 3</div>
+        <h2>인권을 존중하는 모습 그리기</h2>
+        <p class="hint" id="drawHint">그림 스튜디오에서 여러 가지 붓·도형·색칠하기·스티커·글자로 꾸미거나, 📷 사진을 불러와서 그 위에 그려도 좋아요. 다른 사람의 얼굴이 크게 나온 사진은 올리지 않아요.</p>
+        <div class="cv-wrap"><canvas id="cv" width="800" height="600"></canvas></div>
+        <button class="btn" id="openStudio">🎨 그림 스튜디오 열기</button>
+      </div>
+
+      <div class="step" data-s="3">
+        <div class="stt">STEP 4</div>
         <h2>관심을 끄는 해시태그 만들기</h2>
         <p class="hint">추천 해시태그를 누르거나 직접 만들어 보세요. (최대 5개)</p>
         <div class="sug" id="sug"></div>
@@ -348,26 +378,71 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
         <div class="sel" id="tagSel"></div>
       </div>
 
-      <div class="step" data-s="3">
-        <div class="stt">STEP 4</div>
-        <h2>인권 보호 안내문 쓰기</h2>
-        <p class="hint">우리 모두의 인권을 지키기 위한 약속을 담아요. 해야 할 일과 하지 말아야 할 일을 <b>각각 2개 이상</b> 구체적으로 써 주세요. (최대 3개)</p>
-        <div class="q"><span class="lbl">어디(무엇)에 대한 안내문인가요?</span></div>
-        <div class="gtp">( <input class="t" id="gtitle" maxlength="20" placeholder="예) 장애인"> ) 인권 보호 안내문</div>
-        <div class="q"><span class="lbl g">◉ 이렇게 해 주세요 (2개 이상)</span></div>
-        <input class="t" id="do1" maxlength="40" placeholder="예) 휠체어를 탄 친구가 지나가면 길을 비켜 줘요">
-        <input class="t gap" id="do2" maxlength="40" placeholder="예) 도움이 필요한지 먼저 물어보고 도와줘요">
-        <input class="t gap" id="do3" maxlength="40" placeholder="세 번째 약속 (선택)">
-        <div class="q"><span class="lbl r">※ 이렇게 하지 말아요 (2개 이상)</span></div>
-        <input class="t" id="dont1" maxlength="40" placeholder="예) 장애를 흉내 내거나 놀리지 않아요">
-        <input class="t gap" id="dont2" maxlength="40" placeholder="예) 점자블록 위에 물건을 두지 않아요">
-        <input class="t gap" id="dont3" maxlength="40" placeholder="세 번째 약속 (선택)">
+      <div class="step" data-s="4">
+        <div class="stt">STEP 5</div>
+        <h2 id="writeH">글 쓰기</h2>
+        <p class="hint" id="writeHint"></p>
+
+        <div class="tplf" data-t="guide">
+          <div class="q"><span class="lbl">어디(무엇)에 대한 안내문인가요?</span></div>
+          <div class="gtp">( <input class="t" id="gtitle" maxlength="20" placeholder="예) 장애인"> ) 인권 보호 안내문</div>
+          <div class="q"><span class="lbl g">◉ 이렇게 해 주세요 (2개 이상)</span></div>
+          <input class="t" id="do1" maxlength="40" placeholder="예) 휠체어를 탄 친구가 지나가면 길을 비켜 줘요">
+          <input class="t gap" id="do2" maxlength="40" placeholder="예) 도움이 필요한지 먼저 물어보고 도와줘요">
+          <input class="t gap" id="do3" maxlength="40" placeholder="세 번째 약속 (선택)">
+          <div class="q"><span class="lbl r">※ 이렇게 하지 말아요 (2개 이상)</span></div>
+          <input class="t" id="dont1" maxlength="40" placeholder="예) 장애를 흉내 내거나 놀리지 않아요">
+          <input class="t gap" id="dont2" maxlength="40" placeholder="예) 점자블록 위에 물건을 두지 않아요">
+          <input class="t gap" id="dont3" maxlength="40" placeholder="세 번째 약속 (선택)">
+        </div>
+
+        <div class="tplf" data-t="case">
+          <div class="q"><span class="lbl">누구의 어떤 인권?</span></div>
+          <textarea class="t" id="cwho" rows="3" maxlength="150" placeholder="예) 휠체어를 타는 사람이 편하게 이동할 수 있는 경사로예요."></textarea>
+          <div class="q"><span class="lbl y">소개하는 이유</span></div>
+          <textarea class="t" id="cwhy" rows="3" maxlength="150" placeholder="예) 누구나 차별받지 않고 이동할 권리가 있기 때문이에요."></textarea>
+        </div>
+
+        <div class="tplf" data-t="swap">
+          <div class="q"><span class="lbl">어떤 상황인가요? <span class="opt" style="color:#fff">(선택)</span></span></div>
+          <input class="t" id="stitle" maxlength="20" placeholder="예) 친구가 문제를 틀렸을 때">
+          <div class="q"><span class="lbl r">✖ 속상한 말</span> → <span class="lbl g">✔ 바꿔 말하기</span> <span class="opt">(2쌍 이상)</span></div>
+          <div class="pair"><input class="t" id="bad1" maxlength="30" placeholder="예) 너 그것도 몰라?"><input class="t" id="good1" maxlength="30" placeholder="예) 같이 풀어 볼까?"></div>
+          <div class="pair"><input class="t" id="bad2" maxlength="30" placeholder="예) 너랑은 안 놀아!"><input class="t" id="good2" maxlength="30" placeholder="예) 다음에 같이 놀자"></div>
+          <div class="pair"><input class="t" id="bad3" maxlength="30" placeholder="세 번째 (선택)"><input class="t" id="good3" maxlength="30" placeholder="세 번째 (선택)"></div>
+        </div>
+
+        <div class="tplf" data-t="person">
+          <div class="q"><span class="lbl">인물 이름</span></div>
+          <input class="t" id="pname" maxlength="20" placeholder="예) 방정환">
+          <div class="q"><span class="lbl y">어떤 일을 했나요?</span></div>
+          <textarea class="t" id="pdid" rows="3" maxlength="150" placeholder="예) 어린이날을 만들고 어린이를 존중하자고 알렸어요."></textarea>
+          <div class="q"><span class="lbl g">내가 배울 점·실천할 점</span></div>
+          <textarea class="t" id="plearn" rows="3" maxlength="150" placeholder="예) 나도 어린이의 말을 끝까지 듣고 존중할게요."></textarea>
+        </div>
+
+        <div class="tplf" data-t="pledge">
+          <div class="q"><span class="lbl">나는 ... (1개 이상)</span></div>
+          <input class="t" id="pl1" maxlength="50" placeholder="예) 친구의 말을 끝까지 들을게요">
+          <input class="t gap" id="pl2" maxlength="50" placeholder="두 번째 다짐 (선택)">
+          <input class="t gap" id="pl3" maxlength="50" placeholder="세 번째 다짐 (선택)">
+          <div class="q"><span class="lbl y">이유</span> <span class="opt">(선택)</span></div>
+          <input class="t" id="plwhy" maxlength="80" placeholder="예) 모두 존중받을 권리가 있기 때문이에요">
+        </div>
+
+        <div class="tplf" data-t="free">
+          <div class="q"><span class="lbl">제목 <span class="opt" style="color:#fff">(선택)</span></span></div>
+          <input class="t" id="ftitle" maxlength="30" placeholder="예) 우리 반 친구에게 쓰는 편지">
+          <div class="q"><span class="lbl y">이야기</span></div>
+          <textarea class="t" id="fbody" rows="8" maxlength="500" placeholder="하고 싶은 이야기를 자유롭게 써 보세요. 편지, 일기, 생각, 질문 무엇이든 좋아요."></textarea>
+        </div>
+
         <div class="q">🔗 참고 링크 <span class="opt">(선택)</span></div>
         <input class="t" id="link" maxlength="300" inputmode="url" placeholder="https://... (기사, 영상 등)">
       </div>
 
-      <div class="step" data-s="4">
-        <div class="stt">STEP 5</div>
+      <div class="step" data-s="5">
+        <div class="stt">STEP 6</div>
         <h2>미리 보고 올리기</h2>
         <p class="hint">올리면 친구들이 ♥ 와 댓글을 남길 수 있어요. 인기 게시물에 도전!</p>
         <div id="prevCard"></div>
@@ -378,6 +453,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
         <button class="prev" id="btnPrev">이전</button>
         <button class="next" id="btnNext">다음</button>
       </div>
+      <div class="rec" id="saveNote" style="text-align:center;margin-top:10px"></div>
     </div>
   </section>
 </main>
@@ -395,6 +471,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
     <button class="sb" id="s-redo" type="button">↷ 다시 하기</button>
     <button class="sb" id="s-clear" type="button">모두 지우기</button>
     <button class="sb done" id="s-done" type="button">✔ 완성하기</button>
+    <span id="sSaved" style="font-size:13px;opacity:.95;margin-left:auto"></span>
     <button class="sb close" id="s-close" type="button">✕ 닫기</button>
   </div>
   <div id="sbody">
@@ -403,6 +480,22 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
     <div id="opts"></div>
   </div>
   <input type="file" id="photoIn" accept="image/*" style="display:none">
+</div>
+<div class="modal" id="draftModal" style="display:none">
+  <div class="mbox">
+    <div class="mt" id="draftInfo"></div>
+    <img id="draftImg" alt="작성하던 그림" style="width:100%;border-radius:12px;border:1px solid var(--line);margin:8px 0;display:none">
+    <div class="mq">이어서 쓸까요?</div>
+    <div class="mbtns"><button class="prev" id="draftNo">새로 시작</button><button class="next go" id="draftYes">이어서 하기 ✍️</button></div>
+  </div>
+</div>
+<div class="modal" id="tplModal" style="display:none">
+  <div class="mbox">
+    <div class="mt" id="tplMT"></div>
+    <div id="tplEx"></div>
+    <div class="mq">이 틀로 출발할까요?</div>
+    <div class="mbtns"><button class="prev" id="tplNo">다른 틀 볼래요</button><button class="next go" id="tplYes">예! 출발해요 🚀</button></div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -450,6 +543,24 @@ function normLink(v) {   // '' = 없음, null = 잘못된 주소, 문자열 = �
   try { const u = new URL(v); if (!/^https?:$/.test(u.protocol) || !u.hostname.includes(".") || u.href.length > 300) return null; return u.href; } catch (e) { return null; }
 }
 
+/* ---------- 글 틀 ---------- */
+const TPLS = [
+  { id: "guide", ic: "📋", name: "인권 보호 안내문", desc: "해야 할 일과 하지 말아야 할 일을 2개 이상씩 써요", ex: "예) ( 장애인 ) 인권 보호 안내문", tag: "수행평가 틀" },
+  { id: "case", ic: "🌟", name: "인권 사례 소개", desc: "누구의 어떤 인권인지, 소개하는 이유를 써요", ex: "예) 휠체어를 위한 경사로" },
+  { id: "swap", ic: "💬", name: "말 바꾸기", desc: "속상한 말을 존중하는 말로 바꿔요", ex: "예) “너 그것도 몰라?” → “같이 풀어 볼까?”" },
+  { id: "person", ic: "🧑‍🏫", name: "인물 소개", desc: "인권을 위해 애쓴 사람과 배울 점을 소개해요", ex: "예) 방정환" },
+  { id: "pledge", ic: "✋", name: "나의 다짐", desc: "내가 실천할 약속을 다짐으로 써요", ex: "예) 나는 친구의 말을 끝까지 들을게요" },
+  { id: "free", ic: "✍️", name: "자유 글 (틀 없음)", desc: "틀 없이 마음대로! 편지, 일기, 생각 무엇이든 좋아요. 그림은 선택이에요" }
+];
+const WHINT = {
+  guide: "우리 모두의 인권을 지키기 위한 약속을 담아요. 해야 할 일과 하지 말아야 할 일을 각각 2개 이상 구체적으로 써 주세요. (최대 3개)",
+  case: "우리 주변에서 찾은 인권 존중 사례를 소개해요.",
+  swap: "속상한 말과, 그것을 존중하는 말로 바꾼 말을 짝지어 써요.",
+  person: "인권을 위해 애쓴 인물을 소개하고, 내가 배울 점을 써요.",
+  pledge: "내가 실천할 약속을 '나는 ...' 문장으로 이어 써요.",
+  free: "틀 없이 편하게 써요! 그림은 선택이에요."
+};
+const tplOf = p => p.tpl || ((Array.isArray(p.dos) || Array.isArray(p.donts)) ? "guide" : "case");
 const encNick = n => encodeURIComponent(n).replace(/\./g, "%2E");
 const clsLabel = c => ((c && c.school) ? c.school + " " : "") + (c && c.name || "");
 function normQ(v) { return String(v || "").trim().toLowerCase().replace(/^#/, ""); }
@@ -597,7 +708,7 @@ let myPractice = null, practiceP = Promise.resolve();
 let liked = new Set(lsGet("insta_liked", []));
 let expanded = new Set();
 let profile = lsGet("insta_profile", null);   // {id, emoji, color}
-let draft = { emoji: "🐻", color: "#fde68a", tags: [], drawn: false };
+let draft = { emoji: "🐻", color: "#fde68a", tags: [], drawn: false, tpl: "guide" };
 if (profile) { draft.emoji = profile.emoji; draft.color = profile.color; }
 const admin = () => teacher && !!cls;         // 반 안에서 교사일 때 삭제 가능
 
@@ -799,6 +910,7 @@ function enterClass() {
   sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
   step = 0; myPractice = null; showView("feed");
   applyRenames().then(loadMyPractice);
+  setTimeout(offerDraft, 250);
 }
 
 /* ---------- 카드 렌더링 ---------- */
@@ -816,21 +928,37 @@ function cardHtml(p, id, opt) {
     let host = ""; try { host = new URL(p.link).hostname.replace(/^www\./, ""); } catch (e) {}
     if (host) linkHtml = `<a class="lnk" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">🔗 ${esc(host)} 링크 열기</a>`;
   }
-  const isNew = Array.isArray(p.dos) || Array.isArray(p.donts) || !!p.title;
+  const tpl = tplOf(p);
   const dos = (p.dos || []).filter(Boolean), donts = (p.donts || []).filter(Boolean);
   const rcode = opt.code || (cls && cls.code) || "";
-  const canPick = isNew && !opt.preview && !teacher && !(profile && p.uid === profile.id);
+  const canPick = tpl === "guide" && !opt.preview && !teacher && !(profile && p.uid === profile.id);
   const picked = k => !!(myPractice && myPractice.items && Object.values(myPractice.items).some(it => it.ref === rcode + "/" + id + ":" + k));
   const li = (arr, kind) => arr.map((t, i) => `<div class="pi"><span>${esc(t)}</span>${canPick ? `<button class="pick ${picked(kind + i) ? "on" : ""}" data-act="pick" data-kind="${kind}" data-i="${i}">${picked(kind + i) ? "✔ 실천 담음" : "➕ 실천 담기"}</button>` : ""}</div>`).join("");
-  const band = isNew ? `<div class="gt">( ${esc(p.title || "")} ) 인권 보호 안내문</div>` : "";
-  const bodyHtml = isNew
-    ? `<div class="dd"><div class="dh">◉ 이렇게 해 주세요.</div><div class="dh">※ 이렇게 하지 말아요.</div><div class="dc">${li(dos, "do") || "-"}</div><div class="dc">${li(donts, "dont") || "-"}</div></div>`
-    : `<div class="body"><div><span class="lbl">누구의 어떤 인권?</span>${esc(p.who)}</div><div style="margin-top:4px"><span class="lbl y">소개하는 이유</span>${esc(p.why)}</div></div>`;
+  let band = "", bodyHtml = "";
+  if (tpl === "guide") {
+    band = `<div class="gt">( ${esc(p.title || "")} ) 인권 보호 안내문</div>`;
+    bodyHtml = `<div class="dd"><div class="dh">◉ 이렇게 해 주세요.</div><div class="dh">※ 이렇게 하지 말아요.</div><div class="dc">${li(dos, "do") || "-"}</div><div class="dc">${li(donts, "dont") || "-"}</div></div>`;
+  } else if (tpl === "swap") {
+    const pairs = (p.pairs || []).filter(x => x && x.bad && x.good);
+    band = `<div class="gt sw">${p.title ? "( " + esc(p.title) + " ) " : ""}말 바꾸기</div>`;
+    bodyHtml = `<div class="dd swp"><div class="dh bad">✖ 이렇게 말하면 속상해요</div><div class="dh good">✔ 이렇게 바꿔 말해요</div>${pairs.map(x => `<div class="dc">${esc(x.bad)}</div><div class="dc">${esc(x.good)}</div>`).join("")}</div>`;
+  } else if (tpl === "person") {
+    band = `<div class="gt pr">인물 소개 · ${esc(p.name || "")}</div>`;
+    bodyHtml = `<div class="body"><div><span class="lbl">한 일</span>${esc(p.did)}</div><div style="margin-top:4px"><span class="lbl g">배울 점</span>${esc(p.learn)}</div></div>`;
+  } else if (tpl === "pledge") {
+    band = `<div class="gt pl">나의 인권 다짐</div>`;
+    bodyHtml = `<div class="body">${(p.pledges || []).filter(Boolean).map(t => `<div>◆ 나는 ${esc(t)}</div>`).join("")}${p.why ? `<div style="margin-top:6px"><span class="lbl y">이유</span>${esc(p.why)}</div>` : ""}</div>`;
+  } else if (tpl === "free") {
+    band = p.title ? `<div class="gt fr">${esc(p.title)}</div>` : "";
+    bodyHtml = `<div class="body" style="white-space:pre-wrap">${esc(p.body)}</div>`;
+  } else {
+    bodyHtml = `<div class="body"><div><span class="lbl">누구의 어떤 인권?</span>${esc(p.who)}</div><div style="margin-top:4px"><span class="lbl y">소개하는 이유</span>${esc(p.why)}</div></div>`;
+  }
   const canDel = opt.canDel !== undefined ? opt.canDel : (admin() && !opt.preview && !opt.readonly);
   const canRen = admin() && !opt.preview && !opt.readonly;
   return `<article class="card" data-id="${esc(id)}" data-code="${esc(opt.code || "")}">
     <div class="ch">${avHtml(p.avatar, 36)}
-      <div style="min-width:0"><div class="nm">${esc(p.uid)}</div><div class="tm">${opt.preview ? "미리보기" : (opt.label ? esc(opt.label) + " · " : "") + ago(p.ts)}</div></div>
+      <div style="min-width:0"><div class="nm">${esc(p.uid)}</div><div class="tm">${opt.preview ? (opt.timeLabel || "미리보기") : (opt.label ? esc(opt.label) + " · " : "") + ago(p.ts)}</div></div>
       <div class="hact">
         ${opt.hot ? '<span class="hot">🔥 인기 게시물</span>' : ""}
         ${canRen ? `<button class="ren" data-act="ren" data-uid="${esc(p.uid)}">✎ 닉네임 변경</button>` : ""}
@@ -838,7 +966,7 @@ function cardHtml(p, id, opt) {
       </div>
     </div>
     ${band}
-    <div class="pic" data-act="dbl"><img src="${p.img}" alt="인권 존중 그림"><div class="pop">❤️</div></div>
+    ${p.img ? `<div class="pic" data-act="dbl"><img src="${p.img}" alt="인권 존중 그림"><div class="pop">❤️</div></div>` : ""}
     ${opt.preview ? "" : `<div class="act">
       <button class="heart ${on ? "on" : ""}" data-act="like">${on ? "❤️" : "🤍"}</button>
       <span class="lk">좋아요 ${likes}개</span></div>`}
@@ -883,7 +1011,7 @@ function doLike(id, code, redraw) {
   if (REMOTE) redraw(true);
 }
 function heartPop(card) {
-  const pop = card.querySelector(".pop");
+  const pop = card.querySelector(".pop"); if (!pop) return;
   pop.classList.remove("go"); void pop.offsetWidth; pop.classList.add("go");
 }
 $("feed").addEventListener("click", e => {
@@ -1680,7 +1808,7 @@ let resetStudio = () => {};
       b.addEventListener("click", () => { S.bg = col; buildOpts(); });
     });
   }
-  function refreshTop() { $("s-undo").disabled = !S.ops.length; $("s-redo").disabled = !S.redo.length; }
+  function refreshTop() { $("s-undo").disabled = !S.ops.length; $("s-redo").disabled = !S.redo.length; if (window.onStudioChange) window.onStudioChange(); }
 
   function openStudio() {
     studio.classList.add("open"); S.open = true; document.body.style.overflow = "hidden";
@@ -1715,10 +1843,24 @@ let resetStudio = () => {};
     S.ops = []; S.redo = []; S.cur = null; S.photo = null; S.bg = "#FFFFFF"; actx.clearRect(0, 0, RW, RH);
     clearCv(); draft.drawn = false; refreshTop();
   };
+  /* 이어 그리기: 그림을 한 장의 이미지로 저장해 두었다가 다시 불러와요 */
+  window.studioHasContent = hasContent;
+  window.studioSnapshot = q => { composite(cctx); return cmp.toDataURL("image/jpeg", q || .8); };
+  window.studioRestore = url => new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const c = mk(RW, RH); c.getContext("2d").drawImage(img, 0, 0, RW, RH);
+      S.ops = []; S.redo = []; S.cur = null; S.photo = null; S.bg = "#FFFFFF"; actx.clearRect(0, 0, RW, RH);
+      const op = { kind: "photo", c }; applyOp(op); S.ops.push(op); refreshTop(); exportToCv(); res(true);
+    };
+    img.onerror = () => res(false);
+    img.src = url;
+  });
 })();
 
 /* 해시태그 */
 function renderTags() {
+  if (typeof scheduleDraft === "function") scheduleDraft();
   const all = [...new Set([...SUG, ...draft.tags])];
   $("sug").innerHTML = all.map(t => `<button data-t="${esc(t)}" class="${draft.tags.includes(t) ? "on" : ""}">#${esc(t)}</button>`).join("");
   $("tagSel").textContent = draft.tags.length ? draft.tags.map(t => "#" + t).join(" ") : "선택한 해시태그가 여기에 보여요";
@@ -1741,33 +1883,120 @@ $("tagAdd").onclick = addCustomTag;
 $("tagIn").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } });
 
 /* 단계 이동 */
+/* ---------- 틀 예시 팝업 ---------- */
+const svgURI = t => "data:image/svg+xml;utf8," + encodeURIComponent(t);
+const SC = 'stroke="#2b2b38" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"';
+const EX_IMG = {
+  ramp: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#cdeafe"/><circle cx="690" cy="95" r="50" fill="#ffd84d" ${SC}/><rect y="450" width="800" height="150" fill="#b6e3a0"/><rect x="440" y="130" width="330" height="320" fill="#ffe2c7" ${SC}/><rect x="520" y="250" width="90" height="130" fill="#b57b4a" ${SC}/><polygon points="60,450 440,380 440,450" fill="#d9b98a" ${SC}/><line x1="70" y1="372" x2="440" y2="302" ${SC}/><circle cx="300" cy="372" r="40" fill="none" ${SC}/><circle cx="280" cy="222" r="28" fill="#ffd9b3" ${SC}/><line x1="280" y1="250" x2="280" y2="300" ${SC}/><path d="M270 300 L270 330 L330 330" fill="none" ${SC}/><rect x="40" y="150" width="210" height="84" rx="14" fill="#fff" ${SC}/><text x="145" y="208" font-size="46" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#2b2b38">경사로</text></svg>`),
+  swap: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#fff8ec"/><ellipse cx="200" cy="230" rx="170" ry="115" fill="#ffd6dc" ${SC}/><text x="200" y="248" font-size="54" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#9f1239">너 몰라?</text><circle cx="150" cy="430" r="55" fill="#ffd9b3" ${SC}/><circle cx="132" cy="418" r="6" fill="#2b2b38"/><circle cx="168" cy="418" r="6" fill="#2b2b38"/><path d="M128 458 Q150 438 172 458" fill="none" ${SC}/><path d="M390 230 L490 230 M460 198 L490 230 L460 262" fill="none" stroke="#2b2b38" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="600" cy="230" rx="170" ry="115" fill="#d7f5d3" ${SC}/><text x="600" y="222" font-size="46" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#166534">같이 풀어</text><text x="600" y="276" font-size="46" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#166534">볼까?</text><circle cx="650" cy="430" r="55" fill="#ffd9b3" ${SC}/><circle cx="632" cy="418" r="6" fill="#2b2b38"/><circle cx="668" cy="418" r="6" fill="#2b2b38"/><path d="M628 442 Q650 468 672 442" fill="none" ${SC}/></svg>`),
+  person: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#dff1ff"/><rect y="470" width="800" height="130" fill="#b6e3a0"/><rect x="190" y="50" width="420" height="90" rx="16" fill="#fff" ${SC}/><text x="400" y="115" font-size="60" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#2b2b38">어린이날</text><circle cx="400" cy="270" r="52" fill="#ffd9b3" ${SC}/><circle cx="382" cy="262" r="6" fill="#2b2b38"/><circle cx="418" cy="262" r="6" fill="#2b2b38"/><path d="M380 290 Q400 312 420 290" fill="none" ${SC}/><path d="M400 322 L400 420 M400 350 L320 300 M400 350 L480 300 M400 420 L360 480 M400 420 L440 480" fill="none" ${SC}/><circle cx="300" cy="230" r="42" fill="#ff8fa3" ${SC}/><line x1="312" y1="268" x2="322" y2="302" ${SC}/><circle cx="520" cy="220" r="42" fill="#ffd84d" ${SC}/><line x1="508" y1="258" x2="482" y2="300" ${SC}/><circle cx="130" cy="400" r="30" fill="#7ccf85" ${SC}/><circle cx="670" cy="410" r="30" fill="#ff8fa3" ${SC}/></svg>`),
+  pledge: svgURI(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#fff3d6"/><path d="M400 500 C140 330 180 130 330 130 C380 130 400 175 400 175 C400 175 420 130 470 130 C620 130 660 330 400 500Z" fill="#ff6b81" stroke="#2b2b38" stroke-width="8" stroke-linejoin="round"/><text x="400" y="320" font-size="72" font-weight="900" text-anchor="middle" font-family="sans-serif" fill="#fff" stroke="#2b2b38" stroke-width="3">약속해요</text><circle cx="100" cy="100" r="22" fill="#ffd84d" ${SC}/><circle cx="700" cy="120" r="22" fill="#ffd84d" ${SC}/><circle cx="90" cy="500" r="22" fill="#ffd84d" ${SC}/><circle cx="710" cy="500" r="22" fill="#ffd84d" ${SC}/></svg>`)
+};
+const EX_POSTS = {
+  guide: { tpl: "guide", title: "장애인", dos: ["휠체어를 탄 친구가 지나가면 길을 비켜 줘요", "도움이 필요한지 먼저 물어보고 도와줘요"], donts: ["장애를 흉내 내거나 놀리지 않아요", "점자블록 위에 물건을 두지 않아요"], tags: ["모두의권리", "배려"], img: EX_IMG.ramp },
+  case: { tpl: "case", who: "휠체어를 타는 사람이 편하게 이동할 수 있는 경사로예요.", why: "누구나 차별받지 않고 이동할 권리가 있기 때문이에요.", tags: ["이동할권리"], img: EX_IMG.ramp },
+  swap: { tpl: "swap", title: "친구가 문제를 틀렸을 때", pairs: [{ bad: "너 그것도 몰라?", good: "같이 풀어 볼까?" }, { bad: "너랑은 안 놀아!", good: "다음에 같이 놀자" }], tags: ["따뜻한말"], img: EX_IMG.swap },
+  person: { tpl: "person", name: "방정환", did: "어린이날을 만들고, 어린이를 존중하자고 알렸어요.", learn: "나도 어린이의 말을 끝까지 듣고 존중할게요.", tags: ["방정환", "어린이날"], img: EX_IMG.person },
+  pledge: { tpl: "pledge", pledges: ["친구의 말을 끝까지 들을게요", "놀리는 말을 하지 않을게요"], why: "모두 존중받을 권리가 있기 때문이에요.", tags: ["다짐"], img: EX_IMG.pledge },
+  free: { tpl: "free", title: "우리 반 친구에게 쓰는 편지", body: "안녕! 우리 반 모두가 서로를 존중하면 좋겠어.\n그래서 이 편지를 써요.\n\n(그림은 없어도 괜찮아요. 글만 올릴 수도 있어요!)", tags: ["편지"], img: "" }
+};
+let tplPick = "guide";
+function openTplModal(id) {
+  const t = TPLS.find(x => x.id === id) || TPLS[0];
+  tplPick = t.id;
+  $("tplMT").innerHTML = `<b>${t.ic} ${esc(t.name)}</b><br>${esc(t.desc)}<br><span style="color:#6366f1;font-weight:800">▼ 이런 글이 돼요 (예시)</span>`;
+  const sample = Object.assign({ uid: "예시 친구", avatar: { emoji: "🐻", color: "#fde68a" }, likes: 0, ts: Date.now() }, EX_POSTS[t.id]);
+  $("tplEx").innerHTML = cardHtml(sample, "ex", { preview: true, timeLabel: "예시" });
+  $("tplModal").style.display = "flex"; $("tplModal").querySelector(".mbox").scrollTop = 0;
+}
+function closeTplModal() { $("tplModal").style.display = "none"; }
+$("tplNo").onclick = closeTplModal;
+$("tplYes").onclick = () => { draft.tpl = tplPick; closeTplModal(); renderTplChooser(); showStep(2); };
+$("tplModal").addEventListener("click", e => { if (e.target === $("tplModal")) closeTplModal(); });
+window.addEventListener("keydown", e => { if (e.key === "Escape" && $("tplModal").style.display !== "none") closeTplModal(); });
+
+const val = id => $(id).value.trim();
+const vals = ids => ids.map(val).filter(Boolean);
+const TPL_FIELDS = ["gtitle", "do1", "do2", "do3", "dont1", "dont2", "dont3", "cwho", "cwhy", "stitle", "bad1", "bad2", "bad3", "good1", "good2", "good3", "pname", "pdid", "plearn", "pl1", "pl2", "pl3", "plwhy", "ftitle", "fbody", "link"];
+function showWriteForm() {
+  const t = TPLS.find(x => x.id === draft.tpl) || TPLS[0];
+  document.querySelectorAll(".tplf").forEach(f => { f.style.display = f.dataset.t === draft.tpl ? "" : "none"; });
+  $("writeH").textContent = t.ic + " " + t.name + " 쓰기"; $("writeHint").textContent = WHINT[draft.tpl];
+}
+function renderTplChooser() {
+  $("tplList").innerHTML = TPLS.map(t => `<button class="tplc ${draft.tpl === t.id ? "on" : ""}" data-tpl="${t.id}"><span class="tic">${t.ic}</span><span class="tbd"><b>${esc(t.name)}${t.tag ? `<em>${esc(t.tag)}</em>` : ""}</b><span>${esc(t.desc)}</span>${t.ex ? `<i>${esc(t.ex)}</i>` : ""}</span></button>`).join("");
+}
+$("tplList").addEventListener("click", e => { const b = e.target.closest("[data-tpl]"); if (b) openTplModal(b.dataset.tpl); });
 function showStep(n) {
+  closeTplModal();
   step = n;
   document.querySelectorAll(".step").forEach(s => s.classList.toggle("on", +s.dataset.s === n));
   document.querySelectorAll("#dots i").forEach((d, i) => d.classList.toggle("on", i <= n));
   $("btnPrev").style.visibility = n === 0 ? "hidden" : "visible";
-  $("btnNext").textContent = n === 4 ? "🚀 인권스타그램에 올리기" : "다음";
-  $("btnNext").classList.toggle("go", n === 4);
+  $("btnNext").textContent = n === 5 ? "🚀 인권스타그램에 올리기" : "다음";
+  $("btnNext").classList.toggle("go", n === 5);
   $("err").textContent = "";
   if (n === 0) buildProfileUI();
-  if (n === 2) renderTags();
-  if (n === 4) $("prevCard").innerHTML = cardHtml(buildPost(), "preview", { preview: true });
+  if (n === 1) renderTplChooser();
+  if (n === 2) $("drawHint").textContent = draft.tpl === "free" ? "이 틀은 그림이 선택이에요. 그리지 않고 '다음'을 눌러도 돼요. 그리고 싶다면 그림 스튜디오를 열어 보세요!" : "그림 스튜디오에서 여러 가지 붓·도형·색칠하기·스티커·글자로 꾸미거나, 📷 사진을 불러와서 그 위에 그려도 좋아요. 다른 사람의 얼굴이 크게 나온 사진은 올리지 않아요.";
+  if (n === 3) renderTags();
+  if (n === 4) showWriteForm();
+  if (n === 5) $("prevCard").innerHTML = cardHtml(buildPost(), "preview", { preview: true });
   window.scrollTo(0, 0);
+  if (typeof scheduleDraft === "function") scheduleDraft();
 }
 function buildPost() {
-  const link = normLink($("link").value);
-  const p = {
-    uid: profile ? profile.id : $("uid").value.trim(),
-    avatar: { emoji: draft.emoji, color: draft.color },
-    img: cv.toDataURL("image/jpeg", .6),
-    tags: draft.tags.slice(),
-    title: $("gtitle").value.trim(),
-    dos: ["do1", "do2", "do3"].map(i => $(i).value.trim()).filter(Boolean),
-    donts: ["dont1", "dont2", "dont3"].map(i => $(i).value.trim()).filter(Boolean),
-    ts: Date.now(), likes: 0
-  };
+  const link = normLink($("link").value), t = draft.tpl;
+  const p = { uid: profile ? profile.id : $("uid").value.trim(), avatar: { emoji: draft.emoji, color: draft.color }, img: draft.drawn ? cv.toDataURL("image/jpeg", .6) : "", tags: draft.tags.slice(), tpl: t, ts: Date.now(), likes: 0 };
+  if (t === "guide") { p.title = val("gtitle"); p.dos = vals(["do1", "do2", "do3"]); p.donts = vals(["dont1", "dont2", "dont3"]); }
+  else if (t === "case") { p.who = val("cwho"); p.why = val("cwhy"); }
+  else if (t === "swap") { if (val("stitle")) p.title = val("stitle"); p.pairs = [1, 2, 3].map(i => ({ bad: val("bad" + i), good: val("good" + i) })).filter(x => x.bad && x.good); }
+  else if (t === "person") { p.name = val("pname"); p.did = val("pdid"); p.learn = val("plearn"); }
+  else if (t === "pledge") { p.pledges = vals(["pl1", "pl2", "pl3"]); if (val("plwhy")) p.why = val("plwhy"); }
+  else { if (val("ftitle")) p.title = val("ftitle"); p.body = val("fbody"); }
   if (link) p.link = link;
   return p;
+}
+function postStrings(p) {
+  return [p.uid, p.title, p.who, p.why, p.name, p.did, p.learn, p.body, ...(p.dos || []), ...(p.donts || []), ...(p.pledges || []), ...(p.pairs || []).flatMap(x => [x.bad, x.good]), ...(p.tags || [])].filter(Boolean);
+}
+function validateWrite() {
+  const t = draft.tpl;
+  if (t === "guide") {
+    const title = val("gtitle"), d = vals(["do1", "do2", "do3"]), n = vals(["dont1", "dont2", "dont3"]);
+    if ([title, ...d, ...n].some(isBad)) return BAD_MSG;
+    if (title.length < 2) return "안내문 제목(어디에 대한 안내문인지)을 2글자 이상 적어 주세요.";
+    if (d.length < 2 || d.some(x => x.length < 4)) return "'이렇게 해 주세요'를 2개 이상, 각각 4글자 이상 써 주세요.";
+    if (n.length < 2 || n.some(x => x.length < 4)) return "'이렇게 하지 말아요'를 2개 이상, 각각 4글자 이상 써 주세요.";
+  } else if (t === "case") {
+    const w = val("cwho"), y = val("cwhy");
+    if ([w, y].some(isBad)) return BAD_MSG;
+    if (w.length < 5) return "'누구의 어떤 인권'을 5글자 이상 써 주세요.";
+    if (y.length < 5) return "'소개하는 이유'를 5글자 이상 써 주세요.";
+  } else if (t === "swap") {
+    const pairs = [1, 2, 3].map(i => ({ bad: val("bad" + i), good: val("good" + i) }));
+    if ([val("stitle"), ...pairs.flatMap(x => [x.bad, x.good])].some(isBad)) return BAD_MSG;
+    if (pairs.some(x => (x.bad && !x.good) || (!x.bad && x.good))) return "속상한 말과 바꿔 말하기를 짝으로 써 주세요.";
+    const full = pairs.filter(x => x.bad && x.good);
+    if (full.length < 2) return "속상한 말 → 바꿔 말하기를 2쌍 이상 써 주세요.";
+    if (full.some(x => x.bad.length < 3 || x.good.length < 3)) return "각각 3글자 이상 써 주세요.";
+  } else if (t === "person") {
+    const a = val("pname"), b = val("pdid"), c = val("plearn");
+    if ([a, b, c].some(isBad)) return BAD_MSG;
+    if (a.length < 2) return "인물 이름을 2글자 이상 적어 주세요.";
+    if (b.length < 5) return "'어떤 일을 했나요?'를 5글자 이상 써 주세요.";
+    if (c.length < 5) return "'배울 점'을 5글자 이상 써 주세요.";
+  } else if (t === "pledge") {
+    const pl = vals(["pl1", "pl2", "pl3"]);
+    if ([...pl, val("plwhy")].some(isBad)) return BAD_MSG;
+    if (!pl.length || pl.some(x => x.length < 4)) return "다짐을 1개 이상, 각각 4글자 이상 써 주세요.";
+  } else {
+    const b = val("fbody");
+    if ([val("ftitle"), b].some(isBad)) return BAD_MSG;
+    if (b.length < 10) return "이야기를 10글자 이상 써 주세요.";
+  }
+  if (normLink($("link").value) === null) return "링크 주소가 올바르지 않아요. (예: https://www.example.com)";
+  return "";
 }
 function validate(n) {
   if (n === 0) {
@@ -1778,37 +2007,82 @@ function validate(n) {
     profile = { id: v, emoji: draft.emoji, color: draft.color, ts: (profile && profile.id === v) ? (profile.ts || 0) : Date.now() }; lsSet("insta_profile", profile);
     if (prevId !== v) { myPractice = null; loadMyPractice(); }
   }
-  if (n === 1 && !draft.drawn) return "인권을 존중하는 모습을 그리거나 사진을 불러와 주세요.";
-  if (n === 2 && draft.tags.length < 1) return "해시태그를 1개 이상 골라 주세요.";
-  if (n === 3) {
-    const title = $("gtitle").value.trim();
-    const dosV = ["do1", "do2", "do3"].map(i => $(i).value.trim()).filter(Boolean), dontsV = ["dont1", "dont2", "dont3"].map(i => $(i).value.trim()).filter(Boolean);
-    if ([title, ...dosV, ...dontsV].some(isBad)) return BAD_MSG;
-    if (title.length < 2) return "안내문 제목(어디에 대한 안내문인지)을 2글자 이상 적어 주세요.";
-    if (dosV.length < 2 || dosV.some(t => t.length < 4)) return "'이렇게 해 주세요'를 2개 이상, 각각 4글자 이상 써 주세요.";
-    if (dontsV.length < 2 || dontsV.some(t => t.length < 4)) return "'이렇게 하지 말아요'를 2개 이상, 각각 4글자 이상 써 주세요.";
-    if (normLink($("link").value) === null) return "링크 주소가 올바르지 않아요. (예: https://www.example.com)";
-  }
+  if (n === 2 && !draft.drawn && draft.tpl !== "free") return "인권을 존중하는 모습을 그리거나 사진을 불러와 주세요.";
+  if (n === 3 && draft.tags.length < 1) return "해시태그를 1개 이상 골라 주세요.";
+  if (n === 4) return validateWrite();
   return "";
 }
 $("btnPrev").onclick = () => { if (step > 0) showStep(step - 1); };
 $("btnNext").onclick = () => {
+  if (step === 1) { openTplModal(draft.tpl); return; }
   const msg = validate(step);
   if (msg) { $("err").textContent = msg; return; }
-  if (step < 4) { showStep(step + 1); return; }
+  if (step < 5) { showStep(step + 1); return; }
   if (!cls) { toast("반에 먼저 입장해 주세요"); return; }
   const post = buildPost();
-  if ([post.uid, post.title, ...post.dos, ...post.donts, ...post.tags].some(isBad)) { $("err").textContent = BAD_MSG; return; }
+  if (postStrings(post).some(isBad)) { $("err").textContent = BAD_MSG; return; }
   $("btnNext").disabled = true;
   Promise.resolve(store.add(cls.code, post)).then(() => {
     $("btnNext").disabled = false;
     toast("🎉 인권스타그램에 올렸어요!");
-    resetStudio(); draft.tags = [];
-    ["gtitle", "do1", "do2", "do3", "dont1", "dont2", "dont3", "link"].forEach(i => { $(i).value = ""; }); step = 0;
+    resetStudio(); draft.tags = []; clearDraft();
+    TPL_FIELDS.forEach(i => { $(i).value = ""; }); step = 0;
     sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
     showView("feed"); renderFeed(true);
   }).catch(() => { toast("올리지 못했어요. 다시 시도해 주세요"); $("btnNext").disabled = false; });
 };
+
+/* ---------- 이어 쓰기: 중간에 꺼져도 작성하던 글과 그림을 자동 저장 ---------- */
+const DRAFT_KEY = "insta_draft_v1";
+let draftTimer = 0, restoring = false;
+const hm = () => { const d = new Date(); return d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0"); };
+function clearDraft() { clearTimeout(draftTimer); try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} }
+function saveDraftNow() {
+  clearTimeout(draftTimer);
+  if (restoring || teacher || !cls) return;
+  const drawn = typeof studioHasContent === "function" && studioHasContent();
+  const hasText = TPL_FIELDS.some(i => $(i).value.trim()) || draft.tags.length > 0;
+  if (!drawn && !hasText) { clearDraft(); return; }
+  const obj = { v: 1, ts: Date.now(), cls: cls.code, step, tpl: draft.tpl, tags: draft.tags.slice(), drawn, uid: $("uid").value, emoji: draft.emoji, color: draft.color, fields: {} };
+  TPL_FIELDS.forEach(i => { if ($(i).value) obj.fields[i] = $(i).value; });
+  let ok = false;
+  if (drawn) { for (const q of [.8, .6, .45]) { obj.img = studioSnapshot(q); if (lsSet(DRAFT_KEY, obj)) { ok = true; break; } } }
+  else ok = lsSet(DRAFT_KEY, obj);
+  if (!ok) { delete obj.img; obj.drawn = false; ok = lsSet(DRAFT_KEY, obj); }
+  const t = ok ? "💾 자동 저장됨 " + hm() : "";
+  $("saveNote").textContent = t; $("sSaved").textContent = t;
+}
+function scheduleDraft() { clearTimeout(draftTimer); draftTimer = setTimeout(saveDraftNow, 900); }
+window.onStudioChange = scheduleDraft;
+$("viewPost").addEventListener("input", scheduleDraft);
+window.addEventListener("pagehide", saveDraftNow);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") saveDraftNow(); });
+
+function offerDraft() {
+  if (teacher || !cls) return;
+  const d0 = lsGet(DRAFT_KEY, null);
+  if (!d0 || d0.v !== 1 || d0.cls !== cls.code) return;
+  if (Date.now() - d0.ts > 3 * 86400000) { clearDraft(); return; }
+  const t = TPLS.find(x => x.id === d0.tpl) || TPLS[0];
+  $("draftInfo").innerHTML = `<b>작성하던 글이 있어요!</b><br>${t.ic} ${esc(t.name)} · ${ago(d0.ts)}에 저장했어요`;
+  $("draftImg").src = d0.img || ""; $("draftImg").style.display = d0.img ? "" : "none";
+  $("draftModal").style.display = "flex"; $("draftModal").querySelector(".mbox").scrollTop = 0;
+}
+async function restoreDraft() {
+  const d0 = lsGet(DRAFT_KEY, null); $("draftModal").style.display = "none";
+  if (!d0) return;
+  restoring = true;
+  draft.tpl = d0.tpl || "guide"; draft.tags = (d0.tags || []).slice(); draft.emoji = d0.emoji || draft.emoji; draft.color = d0.color || draft.color;
+  if (d0.uid) $("uid").value = d0.uid;
+  TPL_FIELDS.forEach(i => { $(i).value = (d0.fields && d0.fields[i]) || ""; });
+  if (d0.img) await studioRestore(d0.img);
+  restoring = false;
+  showView("post"); showStep(Math.max(0, Math.min(d0.step || 0, 5)));
+  toast("✍️ 이어서 쓸 수 있어요!");
+  scheduleDraft();
+}
+$("draftYes").onclick = restoreDraft;
+$("draftNo").onclick = () => { if (confirm("작성하던 글과 그림을 지우고 새로 시작할까요?")) { clearDraft(); $("draftModal").style.display = "none"; } };
 
 /* ---------- 시작 ---------- */
 (function boot() {
