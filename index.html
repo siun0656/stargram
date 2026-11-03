@@ -256,7 +256,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
     <div class="wz">
       <h2>➕ 새 반 만들기</h2>
       <p class="hint">학교와 반 이름을 적고 만들기를 누르면 학생들이 입장할 반 코드가 생겨요. 학교 이름은 다른 반 검색에 쓰여요.</p>
-      <input class="t" id="cSchool" maxlength="20" placeholder="학교 이름 (예: 부산초등학교)">
+      <input class="t" id="cSchool" maxlength="20" list="schoolList" placeholder="학교 이름 (예: 부산초등학교)"><datalist id="schoolList"></datalist>
       <input class="t gap" id="cName" maxlength="20" placeholder="반 이름 (예: 5학년 6반)">
       <div class="addrow gap">
         <input class="t" id="cCode" maxlength="10" placeholder="반 코드" style="font-weight:800;letter-spacing:2px">
@@ -265,7 +265,13 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
       <button class="btn" id="cMake">반 만들기</button>
       <div class="err" id="cErr"></div>
     </div>
-    <h3 class="sec">🏫 만든 반 목록</h3>
+    <h3 class="sec">🏫 반 목록</h3>
+    <div class="srch" id="clsSrch"><input class="t" id="clsQ" maxlength="20" placeholder="🔎 학교 이름이나 반 이름으로 찾기"><button class="x" id="clsQx" style="display:none" aria-label="검색어 지우기">✕</button></div>
+    <div class="bar">
+      <button class="chip on" data-cs="mine" id="csMine">🏫 내 학교만</button>
+      <button class="chip" data-cs="all">전체 학교</button>
+      <button class="chip" id="csSet">✎ 내 학교 설정</button>
+    </div>
     <div id="clsList"></div>
     <button class="btn sub" id="tOut">교사 로그아웃</button>
   </section>
@@ -501,6 +507,8 @@ let store, REMOTE = false;
         subscribe: (c, cb, lim) => { const r = pp(c).limitToLast(lim || MAX_POSTS); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
         add: (c, p) => { const r = pp(c).push(); return Promise.all([r.set(p), root.child("searchIndex/" + c + "/" + r.key).set({ uid: p.uid, tags: p.tags || [], ts: p.ts, likes: 0 })]); },
         getPost: (c, id) => withTimeout(pp(c, id).once("value")).then(s => s.val()),
+        getLikes: (c, id) => withTimeout(pp(c, id + "/likes").once("value"), 8000).then(s => s.val() || 0),
+        fixIndexLike: (c, id, n) => { const ir = root.child("searchIndex/" + c + "/" + id); return ir.child("ts").once("value").then(s => { if (s.exists()) return ir.child("likes").set(n); }).catch(() => {}); },
         getRename: (c, n) => withTimeout(root.child("classRenames/" + c + "/" + encNick(n)).once("value"), 6000).then(s => s.val()),
         renameNick: (c, oldN, newN) => withTimeout(Promise.all([pp(c).once("value"), root.child("searchIndex/" + c).once("value"), root.child("practice/" + c + "/" + encNick(oldN)).once("value"), root.child("classScores/" + c + "/" + encNick(oldN)).once("value")]), 25000).then(([ps, is, prs, scs]) => {
           const posts = ps.val() || {}, idx = is.val() || {}, up = {}; let n = 0;
@@ -544,6 +552,8 @@ let store, REMOTE = false;
     listClasses: cb => sub(() => cb(ld().classMeta)),
     getIndex: () => { const o = ld().classPosts, r = {}; Object.keys(o).forEach(c => { r[c] = {}; Object.entries(o[c]).forEach(([id, p]) => { r[c][id] = { uid: p.uid, tags: p.tags || [], ts: p.ts, likes: p.likes || 0 }; }); }); return Promise.resolve(r); },
     getPost: (c, id) => Promise.resolve((ld().classPosts[c] || {})[id] || null),
+    getLikes: (c, id) => Promise.resolve((((ld().classPosts[c] || {})[id]) || {}).likes || 0),
+    fixIndexLike: () => Promise.resolve(),
     getRename: (c, n) => Promise.resolve((ld().classRenames[c] || {})[encNick(n)] || null),
     renameNick: (c, oldN, newN) => {
       const o = ld(); let n = 0;
@@ -662,6 +672,8 @@ function openTeacherHome() {
   cls = null; posts = {};
   if (!$("cCode").value) $("cCode").value = genCode();
   $("adminBox").style.display = isAdmin ? "" : "none";
+  clsScope = (isAdmin || !mySchool) ? "all" : "mine"; clsQuery = ""; $("clsQ").value = ""; $("clsQx").style.display = "none";
+  if (mySchool && !$("cSchool").value) $("cSchool").value = mySchool;
   if (unsubClasses) unsubClasses();
   unsubClasses = store.listClasses(renderClasses);
   showView("teacher");
@@ -685,17 +697,62 @@ $("stIndex").onclick = () => {
   toast("색인을 만드는 중이에요...");
   store.rebuildIndex(Object.keys(lastClasses)).then(n => { indexAt = 0; toast("✅ 색인을 만들었어요 (게시물 " + n + "개)"); }).catch(() => toast("색인을 만들지 못했어요"));
 };
+let mySchool = lsGet("insta_myschool", ""), clsScope = mySchool ? "mine" : "all", clsQuery = "";
+/* '대연' = '대연초' = '대연초등학교' 처럼 줄여 쓴 이름도 같은 학교로 봐요 */
+const normSchool = n => String(n || "").replace(/\s+/g, "").toLowerCase().replace(/(초등학교|초)$/, "");
+function sameSchool(a, b) { const x = normSchool(a), y = normSchool(b); return !!x && !!y && (x === y || x.startsWith(y) || y.startsWith(x)); }
+function canonSchool(name) {   // 이미 있는 학교 이름 중 같은 학교를 찾아 정식 이름으로
+  const found = Object.values(lastClasses || {}).map(m => String(m.school || "").trim()).filter(n => n && sameSchool(n, name)).sort((a, b) => b.length - a.length)[0];
+  return found || name;
+}
+function syncSchoolUI() {
+  $("clsSrch").style.display = (clsScope === "mine" && mySchool) ? "none" : "";
+  $("csMine").textContent = mySchool ? "🏫 내 학교만 · " + mySchool : "🏫 내 학교만";
+  document.querySelectorAll("[data-cs]").forEach(b => b.classList.toggle("on", b.dataset.cs === clsScope));
+  $("csSet").textContent = mySchool ? "✎ 내 학교 변경" : "✎ 내 학교 설정";
+}
 function renderClasses(o) {
   lastClasses = o || {};
-  const arr = Object.entries(lastClasses).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
-  $("clsList").innerHTML = arr.length ? arr.map(([code, m]) => `
-    <div class="cls"><div><div class="cn">${esc(clsLabel(m))}</div><div class="cc">${esc(code)}</div>
+  const all = Object.entries(lastClasses), q = clsQuery.trim().toLowerCase();
+  if (mySchool) { const cn = canonSchool(mySchool); if (cn !== mySchool) { mySchool = cn; lsSet("insta_myschool", mySchool); if ($("cSchool").value && sameSchool($("cSchool").value, mySchool)) $("cSchool").value = mySchool; } }
+  let list = all;
+  if (clsScope === "mine" && mySchool) list = list.filter(([, m]) => sameSchool(m.school, mySchool));
+  if (q) list = list.filter(([, m]) => clsLabel(m).toLowerCase().includes(q));
+  $("schoolList").innerHTML = [...new Set(all.map(([, m]) => String(m.school || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ko")).map(n => `<option value="${esc(n)}">`).join("");
+  const groups = {};
+  list.forEach(([code, m]) => { const k = String(m.school || "").trim() || "(학교 이름 없음)"; (groups[k] = groups[k] || []).push([code, m]); });
+  const names = Object.keys(groups).sort((a, b) => (a.charAt(0) === "(") - (b.charAt(0) === "(") || a.localeCompare(b, "ko"));
+  const row = ([code, m]) => `
+    <div class="cls"><div><div class="cn">${esc(m.name)}</div><div class="cc">${esc(code)}</div>
     <div class="sm">${m.ts ? new Date(m.ts).toLocaleDateString("ko-KR") + " 생성" : ""}${isAdmin ? ` · 게시물 <b data-cnt="${esc(code)}">…</b>개` : ""}</div></div>
     <div class="cb" data-code="${esc(code)}" data-name="${esc(m.name)}" data-school="${esc(m.school || "")}">
       <button class="go" data-a="in">입장</button><button data-a="cp">코드 복사</button><button class="dg" data-a="rm">삭제</button>
-    </div></div>`).join("") : `<div class="empty"><div class="big">🏫</div>아직 만든 반이 없어요.<br>위에서 첫 반을 만들어 보세요!</div>`;
-  if (isAdmin) updateAdminStats(arr);
+    </div></div>`;
+  $("clsList").innerHTML = names.length
+    ? names.map(n => `<h3 class="sec" style="margin:14px 2px 6px">🏫 ${esc(n)} <span class="rec">· ${groups[n].length}개 반</span></h3>` + groups[n].sort((a, b) => String(a[1].name).localeCompare(String(b[1].name), "ko", { numeric: true })).map(row).join("")).join("")
+    : (all.length
+      ? `<div class="empty"><div class="big">🔎</div>${q ? "'" + esc(clsQuery.trim()) + "' 검색 결과가 없어요." : "'" + esc(mySchool) + "' 학교의 반이 아직 없어요."}<br>${q ? "학교 이름이나 반 이름을 다시 확인해 보세요." : "위에서 새 반을 만들거나, '전체 학교'를 눌러 보세요."}</div>`
+      : `<div class="empty"><div class="big">🏫</div>아직 만든 반이 없어요.<br>위에서 첫 반을 만들어 보세요!</div>`);
+  if (isAdmin) updateAdminStats(all.slice().sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0)));
+  syncSchoolUI();
 }
+function setMySchool() {
+  const v = prompt("내 학교 이름을 입력해 주세요 (예: 부산초등학교)\n비우면 설정이 풀려요.", mySchool);
+  if (v == null) return;
+  mySchool = canonSchool(v.trim().slice(0, 20)); lsSet("insta_myschool", mySchool);
+  clsScope = mySchool ? "mine" : "all"; clsQuery = ""; $("clsQ").value = ""; $("clsQx").style.display = "none";
+  if (mySchool) $("cSchool").value = mySchool;
+  renderClasses(lastClasses);
+}
+$("clsQ").addEventListener("input", e => { clsQuery = e.target.value; $("clsQx").style.display = clsQuery ? "" : "none"; renderClasses(lastClasses); });
+$("clsQx").onclick = () => { clsQuery = ""; $("clsQ").value = ""; $("clsQx").style.display = "none"; renderClasses(lastClasses); };
+document.querySelectorAll("[data-cs]").forEach(b => b.addEventListener("click", () => {
+  if (b.dataset.cs === "mine" && !mySchool) { setMySchool(); return; }
+  clsScope = b.dataset.cs;
+  if (clsScope === "mine") { clsQuery = ""; $("clsQ").value = ""; $("clsQx").style.display = "none"; }
+  renderClasses(lastClasses);
+}));
+$("csSet").onclick = setMySchool;
 $("clsList").addEventListener("click", e => {
   const b = e.target.closest("[data-a]"); if (!b) return;
   const box = b.closest(".cb"); const code = box.dataset.code, name = box.dataset.name;
@@ -716,6 +773,7 @@ $("cMake").onclick = () => {
   store.createClass(code, { name, school, ts: Date.now() }).then(ok => {
     if (!ok) { $("cErr").textContent = "이미 있는 코드예요. 🎲 새 코드를 눌러 주세요."; return; }
     $("cErr").textContent = ""; $("cName").value = ""; $("cCode").value = genCode();
+    if (!mySchool && school) { mySchool = school; lsSet("insta_myschool", mySchool); if (!isAdmin) clsScope = "mine"; renderClasses(lastClasses); }
     toast("✅ '" + clsLabel({ name, school }) + "' 반을 만들었어요. 코드: " + code);
   }).catch(() => { $("cErr").textContent = "만들지 못했어요. 연결과 Firebase 규칙을 확인해 주세요."; });
 };
@@ -965,6 +1023,14 @@ function loadIndex(force) {
   store.getIndex().then(x => { indexCache = x || {}; }).catch(() => { indexCache = indexCache || {}; })
     .then(() => { indexAt = Date.now(); indexLoading = false; rebuildGlobal(); });
 }
+const likeSynced = new Set();
+function syncLikes(items) {
+  const chunks = []; for (let i = 0; i < items.length; i += 40) chunks.push(items.slice(i, i + 40));
+  return chunks.reduce((p, chunk) => p.then(() => Promise.all(chunk.map(it => store.getLikes(it.code, it.pid).then(n => {
+    const e = (indexCache[it.code] || {})[it.pid];
+    if (e) { if ((e.likes || 0) !== n) store.fixIndexLike(it.code, it.pid, n); e.likes = n; }
+  }).catch(() => {}).then(() => likeSynced.add(gKey(it.code, it.pid)))))), Promise.resolve());
+}
 function rebuildGlobal() {
   gTok++; gList = []; gShown = 0; gLoading = false;
   $("gfeed").innerHTML = ""; $("gmoreBtn").style.display = "none";
@@ -985,7 +1051,15 @@ function rebuildGlobal() {
       pool.push({ code, pid, label, ts: p.ts || 0, likes: p.likes || 0 });
     });
   });
-  if (gSort === "hot") pool.sort((a, b) => b.likes - a.likes || b.ts - a.ts);
+  if (gSort === "hot") {
+    const need = pool.filter(it => !likeSynced.has(gKey(it.code, it.pid)));
+    if (need.length) {
+      const tok = gTok; setGMore("인기순을 정리하는 중이에요...");
+      syncLikes(need).then(() => { if (tok === gTok) rebuildGlobal(); });
+      return;
+    }
+    pool.sort((a, b) => b.likes - a.likes || b.ts - a.ts);
+  }
   else if (gSort === "new") pool.sort((a, b) => b.ts - a.ts);
   else {
     pool.sort((a, b) => (a.code + a.pid < b.code + b.pid ? -1 : 1));
@@ -1042,7 +1116,7 @@ document.querySelectorAll("[data-gs]").forEach(b => b.addEventListener("click", 
   document.querySelectorAll("[data-gs]").forEach(x => x.classList.toggle("on", x === b));
   rebuildGlobal();
 }));
-$("gRefresh").onclick = () => { gSeed = (Math.random() * 1e9) | 0; Object.keys(gCache).forEach(k => delete gCache[k]); loadIndex(true); toast("새로 불러왔어요"); };
+$("gRefresh").onclick = () => { gSeed = (Math.random() * 1e9) | 0; likeSynced.clear(); Object.keys(gCache).forEach(k => delete gCache[k]); loadIndex(true); toast("새로 불러왔어요"); };
 
 /* 하트(좋아요만) · 관리자 삭제 */
 function gLike(card) {
