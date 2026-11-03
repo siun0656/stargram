@@ -169,6 +169,48 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
 .srch .x{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#eee;color:#555;border-radius:50%;width:26px;height:26px;font-size:13px;font-weight:800;line-height:1}
 .banner{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
 .cls .cn{word-break:break-word}
+/* ===== 둘러보기 피드 · 닉네임 변경 ===== */
+.gmore{text-align:center;padding:14px 0 40px;color:var(--sub);font-size:13px;font-weight:700}
+.hact{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.hact .hot,.hact .del,.hact .ren{margin-left:0}
+.ren{border:0;background:#e0e7ff;color:#3730a3;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.cdel.ren2{background:#e0e7ff;color:#3730a3}
+/* ===== 인권 보호 안내문 · 수행평가 ===== */
+.gt{background:#e8f5e1;text-align:center;font-weight:900;padding:9px 12px;font-size:15px;border-top:1px solid #d3e8c9;border-bottom:1px solid #d3e8c9;word-break:break-word}
+.dd{display:grid;grid-template-columns:1fr 1fr;margin:8px 12px 4px;border:1px solid #dcdcdc;border-radius:10px;overflow:hidden}
+.dh{background:#f6ec3a;font-weight:900;font-size:13px;text-align:center;padding:6px 4px}
+.dc{padding:8px 9px;font-size:13.5px;line-height:1.5;min-height:42px;word-break:break-word}
+.dh:nth-child(2),.dc:nth-child(4){border-left:1px solid #e6e6e6}
+.pi{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-bottom:8px}
+.pick{border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:8px;padding:3px 8px;font-size:12px;font-weight:700}
+.pick.on{background:#dcfce7;border-color:#86efac;color:#166534}
+.lbl.g{background:#16a34a}.lbl.r{background:#dc2626}
+.gtp{display:flex;align-items:center;gap:6px;font-weight:900;font-size:15px;background:#e8f5e1;border-radius:10px;padding:8px 10px}
+.gtp input{flex:1;min-width:0;background:#fff}
+.sec2{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.sec2 h3{margin:0 0 8px;font-size:16px}
+.numb{display:inline-flex;width:24px;height:24px;border-radius:7px;background:var(--grad);color:#fff;font-weight:900;font-size:13px;align-items:center;justify-content:center;margin-right:6px}
+.okbox{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;line-height:1.5}
+.warnbox{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;line-height:1.5}
+.chosen{padding:10px 0;border-bottom:1px dashed #e5e5e5}
+.chosen:last-of-type{border-bottom:0}
+.chosen .tx{font-size:14px;font-weight:700;line-height:1.5}
+.chosen .fm{font-size:12px;color:var(--sub)}
+.rs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.rs button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:6px 10px;font-size:13px;font-weight:700}
+.rs button.on{background:#dbeafe;border-color:#60a5fa;color:#1e40af}
+.rm{border:0;background:#fee2e2;color:#b91c1c;border-radius:8px;padding:3px 8px;font-size:12px;font-weight:700;margin-left:6px}
+.asc{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.asc .ah{display:flex;gap:8px;align-items:center;padding:10px 12px;background:#faf5ff;font-size:15px;flex-wrap:wrap}
+.asc .tot{margin-left:auto;font-weight:900;color:#dc2743}
+.asc .ab{padding:10px 12px;font-size:13.5px;line-height:1.55;border-top:1px solid #f0f0f0;word-break:break-word}
+.asc .ab b.k{display:inline-block;margin-bottom:2px}
+.sg{display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap}
+.sg button{border:1.5px solid var(--line);background:#fff;border-radius:8px;min-width:42px;padding:5px 8px;font-weight:800;font-size:13px}
+.sg button.on{background:var(--grad);color:#fff;border-color:transparent}
+.rec{font-size:12px;color:var(--sub);font-weight:700}
+.arow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.arow .chip{flex:none}
 </style>
 </head>
 <body>
@@ -209,6 +251,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
         <div class="stat"><div class="n" id="stPosts">…</div>전체 게시물</div>
       </div>
       <button class="btn sub" id="stRefresh">🔄 새로고침</button>
+      <button class="btn sub" id="stIndex">🔧 검색 색인 다시 만들기 (이전 글 포함)</button>
     </div>
     <div class="wz">
       <h2>➕ 새 반 만들기</h2>
@@ -237,10 +280,8 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
     <div id="feed"></div>
   </section>
 
-  <!-- 다른 반 구경: 반 목록 -->
+  <!-- 다른 반 구경: 인스타그램처럼 쫙 -->
   <section id="viewOthers" style="display:none">
-    <h3 class="sec" style="margin-top:4px">🌏 다른 반 인권스타그램 구경하기</h3>
-    <p class="hint">다른 반 친구들은 어떤 인권 존중 모습을 소개했을까요? 마음에 드는 게시물에 ♥만 누를 수 있어요. (댓글은 우리 반에서만!)</p>
     <div class="srch"><input class="t" id="gq" maxlength="20" placeholder="🔎 학교 · 닉네임 · #해시태그로 찾기"><button class="x" id="gqx" style="display:none" aria-label="검색어 지우기">✕</button></div>
     <div class="bar">
       <button class="chip on" data-gm="all">전체</button>
@@ -248,20 +289,21 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
       <button class="chip" data-gm="nick">🙂 닉네임</button>
       <button class="chip" data-gm="tag"># 해시태그</button>
     </div>
-    <div id="othersList"></div>
+    <div class="bar">
+      <button class="chip on" data-gs="rand">🎲 랜덤</button>
+      <button class="chip" data-gs="hot">🔥 인기순</button>
+      <button class="chip" data-gs="new">🕒 최신순</button>
+      <button class="chip" id="gRefresh">🔄 새로고침</button>
+    </div>
+    <div id="gfeed"></div>
+    <div id="gmore" class="gmore"><span id="gmoreText"></span><button class="chip" id="gmoreBtn" style="display:none">더 보기</button></div>
   </section>
 
-  <!-- 다른 반 구경: 피드 -->
-  <section id="viewOther" style="display:none">
-    <div class="bar" style="align-items:center"><button class="chip" id="otherBack">← 다른 반 목록</button><span class="mode cls" id="otherTitle"></span></div>
-    <div class="banner" id="otherBanner" style="display:none"><span>🔎 검색한 게시물만 보고 있어요</span><button class="chip" id="otherAll">이 반 전체 보기</button></div>
-    <div class="srch"><input class="t" id="otherQ" maxlength="20" placeholder="🔎 이 반에서 닉네임·#해시태그로 찾기"><button class="x" id="otherQx" style="display:none" aria-label="검색어 지우기">✕</button></div>
-    <div class="bar">
-      <button class="chip on" data-osort="new">🕒 최신순</button>
-      <button class="chip" data-osort="hot">🔥 인기순</button>
-    </div>
-    <div id="otherFeed"></div>
-  </section>
+  <!-- 내 수행 (학생) -->
+  <section id="viewMine" style="display:none"><div id="mineBody"></div></section>
+
+  <!-- 수행평가 현황 (교사) -->
+  <section id="viewAssess" style="display:none"><div id="assessBody"></div></section>
 
   <!-- 올리기 -->
   <section id="viewPost" style="display:none">
@@ -302,11 +344,18 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
 
       <div class="step" data-s="3">
         <div class="stt">STEP 4</div>
-        <h2>소개하는 글 쓰기</h2>
-        <div class="q"><span class="lbl">누구의 어떤 인권?</span></div>
-        <textarea class="t" id="who" rows="3" maxlength="150" placeholder="예) 휠체어를 타는 사람이 편하게 이동할 수 있는 경사로예요."></textarea>
-        <div class="q"><span class="lbl y">소개하는 이유</span></div>
-        <textarea class="t" id="why" rows="3" maxlength="150" placeholder="예) 누구나 차별받지 않고 이동할 권리가 있기 때문이에요."></textarea>
+        <h2>인권 보호 안내문 쓰기</h2>
+        <p class="hint">우리 모두의 인권을 지키기 위한 약속을 담아요. 해야 할 일과 하지 말아야 할 일을 <b>각각 2개 이상</b> 구체적으로 써 주세요. (최대 3개)</p>
+        <div class="q"><span class="lbl">어디(무엇)에 대한 안내문인가요?</span></div>
+        <div class="gtp">( <input class="t" id="gtitle" maxlength="20" placeholder="예) 장애인"> ) 인권 보호 안내문</div>
+        <div class="q"><span class="lbl g">◉ 이렇게 해 주세요 (2개 이상)</span></div>
+        <input class="t" id="do1" maxlength="40" placeholder="예) 휠체어를 탄 친구가 지나가면 길을 비켜 줘요">
+        <input class="t gap" id="do2" maxlength="40" placeholder="예) 도움이 필요한지 먼저 물어보고 도와줘요">
+        <input class="t gap" id="do3" maxlength="40" placeholder="세 번째 약속 (선택)">
+        <div class="q"><span class="lbl r">※ 이렇게 하지 말아요 (2개 이상)</span></div>
+        <input class="t" id="dont1" maxlength="40" placeholder="예) 장애를 흉내 내거나 놀리지 않아요">
+        <input class="t gap" id="dont2" maxlength="40" placeholder="예) 점자블록 위에 물건을 두지 않아요">
+        <input class="t gap" id="dont3" maxlength="40" placeholder="세 번째 약속 (선택)">
         <div class="q">🔗 참고 링크 <span class="opt">(선택)</span></div>
         <input class="t" id="link" maxlength="300" inputmode="url" placeholder="https://... (기사, 영상 등)">
       </div>
@@ -331,6 +380,7 @@ canvas{width:100%;height:auto;display:block;aspect-ratio:4/3;touch-action:none;c
   <button id="tabFeed" class="on"><span class="ic">🏠</span>인권 피드</button>
   <button id="tabPost"><span class="ic">➕</span>게시물 올리기</button>
   <button id="tabOthers"><span class="ic">🌏</span>다른 반 구경</button>
+  <button id="tabMine"><span class="ic" id="tabMineI">📝</span><span id="tabMineT">내 수행</span></button>
 </nav>
 <div id="studio" role="dialog" aria-label="그림 스튜디오">
   <div id="stop">
@@ -394,6 +444,7 @@ function normLink(v) {   // '' = 없음, null = 잘못된 주소, 문자열 = �
   try { const u = new URL(v); if (!/^https?:$/.test(u.protocol) || !u.hostname.includes(".") || u.href.length > 300) return null; return u.href; } catch (e) { return null; }
 }
 
+const encNick = n => encodeURIComponent(n).replace(/\./g, "%2E");
 const clsLabel = c => ((c && c.school) ? c.school + " " : "") + (c && c.name || "");
 function normQ(v) { return String(v || "").trim().toLowerCase().replace(/^#/, ""); }
 function matchPost(p, q) {
@@ -440,11 +491,41 @@ let store, REMOTE = false;
         getClass: c => withTimeout(root.child("classMeta/" + c).once("value")).then(s => s.val()),
         listClasses: cb => { const r = root.child("classMeta"); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
         createClass: (c, meta) => withTimeout(root.child("classMeta/" + c).transaction(cur => cur === null ? meta : undefined)).then(r => r.committed),
-        deleteClass: c => Promise.all([root.child("classMeta/" + c).remove(), pp(c).remove(), root.child("searchIndex/" + c).remove()]),
+        deleteClass: c => Promise.all([root.child("classMeta/" + c).remove(), pp(c).remove(), root.child("searchIndex/" + c).remove(), root.child("practice/" + c).remove(), root.child("classScores/" + c).remove()]),
+        getPractice: (c, n) => withTimeout(root.child("practice/" + c + "/" + encNick(n)).once("value"), 8000).then(s => s.val()),
+        setPractice: (c, n, rec) => root.child("practice/" + c + "/" + encNick(n)).set(rec),
+        subscribePractice: (c, cb) => { const r = root.child("practice/" + c); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
+        subscribeScores: (c, cb) => { const r = root.child("classScores/" + c); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
+        setScore: (c, n, sc) => root.child("classScores/" + c + "/" + encNick(n)).set(sc),
         getIndex: () => withTimeout(root.child("searchIndex").once("value")).then(s => s.val() || {}),
-        subscribe: (c, cb) => { const r = pp(c).limitToLast(MAX_POSTS); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
-        add: (c, p) => { const r = pp(c).push(); return Promise.all([r.set(p), root.child("searchIndex/" + c + "/" + r.key).set({ uid: p.uid, tags: p.tags || [], ts: p.ts })]); },
-        like: (c, id, d) => pp(c, id + "/likes").transaction(v => Math.max(0, (v || 0) + d)),
+        subscribe: (c, cb, lim) => { const r = pp(c).limitToLast(lim || MAX_POSTS); const h = r.on("value", s => cb(s.val() || {})); return () => r.off("value", h); },
+        add: (c, p) => { const r = pp(c).push(); return Promise.all([r.set(p), root.child("searchIndex/" + c + "/" + r.key).set({ uid: p.uid, tags: p.tags || [], ts: p.ts, likes: 0 })]); },
+        getPost: (c, id) => withTimeout(pp(c, id).once("value")).then(s => s.val()),
+        getRename: (c, n) => withTimeout(root.child("classRenames/" + c + "/" + encNick(n)).once("value"), 6000).then(s => s.val()),
+        renameNick: (c, oldN, newN) => withTimeout(Promise.all([pp(c).once("value"), root.child("searchIndex/" + c).once("value"), root.child("practice/" + c + "/" + encNick(oldN)).once("value"), root.child("classScores/" + c + "/" + encNick(oldN)).once("value")]), 25000).then(([ps, is, prs, scs]) => {
+          const posts = ps.val() || {}, idx = is.val() || {}, up = {}; let n = 0;
+          Object.entries(posts).forEach(([id, p]) => {
+            if (p.uid === oldN) { up["classPosts/" + c + "/" + id + "/uid"] = newN; if (idx[id]) up["searchIndex/" + c + "/" + id + "/uid"] = newN; n++; }
+            Object.entries(p.comments || {}).forEach(([cid, cm]) => { if (cm.uid === oldN) { up["classPosts/" + c + "/" + id + "/comments/" + cid + "/uid"] = newN; n++; } });
+          });
+          up["classRenames/" + c + "/" + encNick(oldN)] = { to: newN, ts: Date.now() };
+          if (prs.exists()) { const rec = prs.val(); rec.uid = newN; up["practice/" + c + "/" + encNick(newN)] = rec; up["practice/" + c + "/" + encNick(oldN)] = null; }
+          if (scs.exists()) { up["classScores/" + c + "/" + encNick(newN)] = scs.val(); up["classScores/" + c + "/" + encNick(oldN)] = null; }
+          return root.update(up).then(() => n);
+        }),
+        rebuildIndex: async codes => {
+          let n = 0;
+          for (const c of codes) {
+            const posts = (await withTimeout(pp(c).once("value"), 30000)).val() || {}, idx = {};
+            Object.entries(posts).forEach(([id, p]) => { idx[id] = { uid: p.uid, tags: p.tags || [], ts: p.ts || 0, likes: p.likes || 0 }; n++; });
+            await root.child("searchIndex/" + c).set(Object.keys(idx).length ? idx : null);
+          }
+          return n;
+        },
+        like: (c, id, d) => pp(c, id + "/likes").transaction(v => Math.max(0, (v || 0) + d)).then(res => {
+          const n = res.snapshot.val() || 0, ir = root.child("searchIndex/" + c + "/" + id);
+          return ir.child("ts").once("value").then(s => { if (s.exists()) return ir.child("likes").set(n); });
+        }).catch(() => {}),
         comment: (c, id, cm) => pp(c, id + "/comments").push(cm),
         removePost: (c, id) => Promise.all([pp(c, id).remove(), root.child("searchIndex/" + c + "/" + id).remove()]),
         removeComment: (c, id, cid) => pp(c, id + "/comments/" + cid).remove(),
@@ -455,15 +536,35 @@ let store, REMOTE = false;
   }
   /* 연습 모드: 이 기기 안에서만 저장 */
   const KEY = "insta_localdb"; let L = [];
-  const ld = () => { const o = lsGet(KEY, null) || {}; o.classMeta = o.classMeta || {}; o.classPosts = o.classPosts || {}; return o; };
+  const ld = () => { const o = lsGet(KEY, null) || {}; o.classMeta = o.classMeta || {}; o.classPosts = o.classPosts || {}; o.classRenames = o.classRenames || {}; o.practice = o.practice || {}; o.classScores = o.classScores || {}; return o; };
   const sv = o => { if (!lsSet(KEY, o)) toast("저장 공간이 부족해요"); L.forEach(l => l.fire()); };
   const sub = (fire) => { const l = { fire }; L.push(l); fire(); return () => { L = L.filter(x => x !== l); }; };
   store = {
     getClass: c => Promise.resolve(ld().classMeta[c] || null),
     listClasses: cb => sub(() => cb(ld().classMeta)),
-    getIndex: () => { const o = ld().classPosts, r = {}; Object.keys(o).forEach(c => { r[c] = {}; Object.entries(o[c]).forEach(([id, p]) => { r[c][id] = { uid: p.uid, tags: p.tags || [], ts: p.ts }; }); }); return Promise.resolve(r); },
+    getIndex: () => { const o = ld().classPosts, r = {}; Object.keys(o).forEach(c => { r[c] = {}; Object.entries(o[c]).forEach(([id, p]) => { r[c][id] = { uid: p.uid, tags: p.tags || [], ts: p.ts, likes: p.likes || 0 }; }); }); return Promise.resolve(r); },
+    getPost: (c, id) => Promise.resolve((ld().classPosts[c] || {})[id] || null),
+    getRename: (c, n) => Promise.resolve((ld().classRenames[c] || {})[encNick(n)] || null),
+    renameNick: (c, oldN, newN) => {
+      const o = ld(); let n = 0;
+      Object.values(o.classPosts[c] || {}).forEach(p => {
+        if (p.uid === oldN) { p.uid = newN; n++; }
+        Object.values(p.comments || {}).forEach(cm => { if (cm.uid === oldN) { cm.uid = newN; n++; } });
+      });
+      (o.classRenames[c] = o.classRenames[c] || {})[encNick(oldN)] = { to: newN, ts: Date.now() };
+      const pr = o.practice[c] || {}, ko = encNick(oldN), kn = encNick(newN);
+      if (pr[ko]) { pr[kn] = Object.assign({}, pr[ko], { uid: newN }); delete pr[ko]; }
+      const sc = o.classScores[c] || {}; if (sc[ko]) { sc[kn] = sc[ko]; delete sc[ko]; }
+      sv(o); return Promise.resolve(n);
+    },
+    rebuildIndex: codes => Promise.resolve(codes.reduce((a, c) => a + Object.keys(ld().classPosts[c] || {}).length, 0)),
     createClass: (c, meta) => { const o = ld(); if (o.classMeta[c]) return Promise.resolve(false); o.classMeta[c] = meta; sv(o); return Promise.resolve(true); },
-    deleteClass: c => { const o = ld(); delete o.classMeta[c]; delete o.classPosts[c]; sv(o); return Promise.resolve(); },
+    deleteClass: c => { const o = ld(); delete o.classMeta[c]; delete o.classPosts[c]; delete o.practice[c]; delete o.classScores[c]; sv(o); return Promise.resolve(); },
+    getPractice: (c, n) => Promise.resolve(JSON.parse(JSON.stringify((ld().practice[c] || {})[encNick(n)] || null))),
+    setPractice: (c, n, rec) => { const o = ld(); (o.practice[c] = o.practice[c] || {})[encNick(n)] = rec; sv(o); return Promise.resolve(); },
+    subscribePractice: (c, cb) => sub(() => cb(ld().practice[c] || {})),
+    subscribeScores: (c, cb) => sub(() => cb(ld().classScores[c] || {})),
+    setScore: (c, n, sc) => { const o = ld(); (o.classScores[c] = o.classScores[c] || {})[encNick(n)] = sc; sv(o); return Promise.resolve(); },
     subscribe: (c, cb) => sub(() => cb(ld().classPosts[c] || {})),
     add: (c, p) => { const o = ld(); (o.classPosts[c] = o.classPosts[c] || {})["p" + Date.now() + Math.random().toString(36).slice(2, 5)] = p; sv(o); return Promise.resolve(); },
     like: (c, id, d) => { const o = ld(), p = (o.classPosts[c] || {})[id]; if (p) p.likes = Math.max(0, (p.likes || 0) + d); sv(o); return Promise.resolve(); },
@@ -481,7 +582,8 @@ let cls = null;                       // {code, name}
 let current = "home";
 let posts = {};
 let sortMode = "new";
-let unsubPosts = null, unsubClasses = null, unsubOthers = null, unsubOther = null;
+let unsubPosts = null, unsubClasses = null, unsubOthers = null, unsubAssess = null;
+let myPractice = null, practiceP = Promise.resolve();
 let liked = new Set(lsGet("insta_liked", []));
 let expanded = new Set();
 let profile = lsGet("insta_profile", null);   // {id, emoji, color}
@@ -499,19 +601,21 @@ function setMode() {
   if (!REMOTE) { t += (t ? " · " : "") + "연습 모드(이 기기만)"; if (!cls && !teacher) c = "mode local"; }
   m.className = c; m.textContent = t;
   const ex = $("btnExit");
-  const inCls = ["feed", "post", "others", "other"].includes(current);
+  const inCls = ["feed", "post", "others", "mine", "assess"].includes(current);
+  $("tabMineT").textContent = teacher ? "평가 현황" : "내 수행"; $("tabMineI").textContent = teacher ? "📋" : "📝";
   ex.style.display = inCls ? "" : "none";
   ex.textContent = teacher ? "← 반 목록" : "반 나가기";
 }
 function showView(v) {
   current = v;
-  ["Home", "Teacher", "Feed", "Post", "Others", "Other"].forEach(n => { $("view" + n).style.display = n.toLowerCase() === v ? "" : "none"; });
-  $("nav").style.display = ["feed", "post", "others", "other"].includes(v) ? "flex" : "none";
+  ["Home", "Teacher", "Feed", "Post", "Others", "Mine", "Assess"].forEach(n => { $("view" + n).style.display = n.toLowerCase() === v ? "" : "none"; });
+  $("nav").style.display = ["feed", "post", "others", "mine", "assess"].includes(v) ? "flex" : "none";
   $("tabFeed").classList.toggle("on", v === "feed");
   $("tabPost").classList.toggle("on", v === "post");
-  $("tabOthers").classList.toggle("on", v === "others" || v === "other");
+  $("tabOthers").classList.toggle("on", v === "others");
+  $("tabMine").classList.toggle("on", v === "mine" || v === "assess");
+  if (v !== "assess" && unsubAssess) { unsubAssess(); unsubAssess = null; }
   if (v !== "others" && unsubOthers) { unsubOthers(); unsubOthers = null; }
-  if (v !== "other" && unsubOther) { unsubOther(); unsubOther = null; }
   setMode(); window.scrollTo(0, 0);
 }
 
@@ -576,6 +680,11 @@ function updateAdminStats(arr) {
   }))).then(ns => { if (tok === statTok) $("stPosts").textContent = ns.reduce((a, b) => a + b, 0); });
 }
 $("stRefresh").onclick = () => renderClasses(lastClasses);
+$("stIndex").onclick = () => {
+  if (!confirm("모든 반의 게시물을 읽어서 검색 색인을 다시 만들어요.\n게시물이 많으면 시간이 걸리고 데이터를 많이 써요. 계속할까요?")) return;
+  toast("색인을 만드는 중이에요...");
+  store.rebuildIndex(Object.keys(lastClasses)).then(n => { indexAt = 0; toast("✅ 색인을 만들었어요 (게시물 " + n + "개)"); }).catch(() => toast("색인을 만들지 못했어요"));
+};
 function renderClasses(o) {
   lastClasses = o || {};
   const arr = Object.entries(lastClasses).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
@@ -620,7 +729,7 @@ $("btnExit").onclick = () => {
   if (!confirm("반에서 나갈까요?")) return;
   lsSet("insta_class", null);
   if (unsubPosts) { unsubPosts(); unsubPosts = null; }
-  cls = null; posts = {}; showView("home");
+  cls = null; posts = {}; myPractice = null; showView("home");
 };
 
 /* ---------- 반 입장 ---------- */
@@ -628,9 +737,10 @@ function enterClass() {
   if (unsubClasses) { unsubClasses(); unsubClasses = null; }
   if (unsubPosts) unsubPosts();
   posts = {}; expanded = new Set(); feedQ = ""; $("feedQ").value = ""; $("feedQx").style.display = "none"; renderFeed(true);
-  unsubPosts = store.subscribe(cls.code, o => { posts = o || {}; renderFeed(); });
+  unsubPosts = store.subscribe(cls.code, o => { posts = o || {}; renderFeed(); if (current === "assess") renderAssess(); else if (current === "mine") renderMine(); }, teacher ? 300 : undefined);
   sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
-  step = 0; showView("feed");
+  step = 0; myPractice = null; showView("feed");
+  applyRenames().then(loadMyPractice);
 }
 
 /* ---------- 카드 렌더링 ---------- */
@@ -648,26 +758,38 @@ function cardHtml(p, id, opt) {
     let host = ""; try { host = new URL(p.link).hostname.replace(/^www\./, ""); } catch (e) {}
     if (host) linkHtml = `<a class="lnk" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">🔗 ${esc(host)} 링크 열기</a>`;
   }
-  const canDel = admin() && !opt.preview && !opt.readonly;
-  return `<article class="card" data-id="${esc(id)}">
+  const isNew = Array.isArray(p.dos) || Array.isArray(p.donts) || !!p.title;
+  const dos = (p.dos || []).filter(Boolean), donts = (p.donts || []).filter(Boolean);
+  const rcode = opt.code || (cls && cls.code) || "";
+  const canPick = isNew && !opt.preview && !teacher && !(profile && p.uid === profile.id);
+  const picked = k => !!(myPractice && myPractice.items && Object.values(myPractice.items).some(it => it.ref === rcode + "/" + id + ":" + k));
+  const li = (arr, kind) => arr.map((t, i) => `<div class="pi"><span>${esc(t)}</span>${canPick ? `<button class="pick ${picked(kind + i) ? "on" : ""}" data-act="pick" data-kind="${kind}" data-i="${i}">${picked(kind + i) ? "✔ 실천 담음" : "➕ 실천 담기"}</button>` : ""}</div>`).join("");
+  const band = isNew ? `<div class="gt">( ${esc(p.title || "")} ) 인권 보호 안내문</div>` : "";
+  const bodyHtml = isNew
+    ? `<div class="dd"><div class="dh">◉ 이렇게 해 주세요.</div><div class="dh">※ 이렇게 하지 말아요.</div><div class="dc">${li(dos, "do") || "-"}</div><div class="dc">${li(donts, "dont") || "-"}</div></div>`
+    : `<div class="body"><div><span class="lbl">누구의 어떤 인권?</span>${esc(p.who)}</div><div style="margin-top:4px"><span class="lbl y">소개하는 이유</span>${esc(p.why)}</div></div>`;
+  const canDel = opt.canDel !== undefined ? opt.canDel : (admin() && !opt.preview && !opt.readonly);
+  const canRen = admin() && !opt.preview && !opt.readonly;
+  return `<article class="card" data-id="${esc(id)}" data-code="${esc(opt.code || "")}">
     <div class="ch">${avHtml(p.avatar, 36)}
-      <div><div class="nm">${esc(p.uid)}</div><div class="tm">${opt.preview ? "미리보기" : ago(p.ts)}</div></div>
-      ${opt.hot ? '<span class="hot">🔥 인기 게시물</span>' : ""}
-      ${canDel ? '<button class="del" data-act="del">게시물 삭제</button>' : ""}
+      <div style="min-width:0"><div class="nm">${esc(p.uid)}</div><div class="tm">${opt.preview ? "미리보기" : (opt.label ? esc(opt.label) + " · " : "") + ago(p.ts)}</div></div>
+      <div class="hact">
+        ${opt.hot ? '<span class="hot">🔥 인기 게시물</span>' : ""}
+        ${canRen ? `<button class="ren" data-act="ren" data-uid="${esc(p.uid)}">✎ 닉네임 변경</button>` : ""}
+        ${canDel ? '<button class="del" data-act="del">게시물 삭제</button>' : ""}
+      </div>
     </div>
+    ${band}
     <div class="pic" data-act="dbl"><img src="${p.img}" alt="인권 존중 그림"><div class="pop">❤️</div></div>
     ${opt.preview ? "" : `<div class="act">
       <button class="heart ${on ? "on" : ""}" data-act="like">${on ? "❤️" : "🤍"}</button>
       <span class="lk">좋아요 ${likes}개</span></div>`}
-    <div class="body">
-      <div><span class="lbl">누구의 어떤 인권?</span>${esc(p.who)}</div>
-      <div style="margin-top:4px"><span class="lbl y">소개하는 이유</span>${esc(p.why)}</div>
-    </div>
+    ${bodyHtml}
     ${linkHtml}
     <div class="tags">${tags}</div>
     ${opt.preview ? "" : `
       ${cms.length > 3 && !open ? `<button class="more" data-act="more">댓글 ${cms.length}개 모두 보기</button>` : ""}
-      <div class="cms">${shown.map(c => `<div class="c"><b>${esc(c.uid)}</b>${esc(c.text)}${canDel ? `<button class="cdel" data-act="delc" data-cid="${esc(c.cid)}">✕ 삭제</button>` : ""}</div>`).join("")}</div>
+      <div class="cms">${shown.map(c => `<div class="c"><b>${esc(c.uid)}</b>${esc(c.text)}${canRen && c.uid.indexOf("선생님") < 0 ? `<button class="cdel ren2" data-act="ren" data-uid="${esc(c.uid)}">✎ 이름</button>` : ""}${canDel ? `<button class="cdel" data-act="delc" data-cid="${esc(c.cid)}">✕ 삭제</button>` : ""}</div>`).join("")}</div>
       ${opt.readonly ? '<div style="height:10px"></div>' : '<div class="cin"><input maxlength="60" placeholder="따뜻한 댓글을 남겨 보세요 💬"><button data-act="cm">게시</button></div>'}`}
   </article>`;
 }
@@ -714,8 +836,83 @@ $("feed").addEventListener("click", e => {
   else if (act === "more") { expanded.add(id); renderFeed(true); }
   else if (act === "del") { if (admin() && confirm("이 게시물을 삭제할까요?")) store.removePost(cls.code, id).then(() => toast("게시물을 삭제했어요")); }
   else if (act === "delc") { if (admin() && confirm("이 댓글을 삭제할까요?")) store.removeComment(cls.code, id, el.dataset.cid).then(() => toast("댓글을 삭제했어요")); }
+  else if (act === "ren") renameFlow(el.dataset.uid);
+  else if (act === "pick") togglePick(card, el);
   else if (act === "cm") submitComment(card, id);
 });
+/* ----- 실천 내용 담기 (친구 안내문에서) ----- */
+function loadMyPractice() {
+  if (teacher || !cls || !profile) { myPractice = null; practiceP = Promise.resolve(); return practiceP; }
+  const nick = profile.id, code = cls.code;
+  practiceP = Promise.resolve(store.getPractice(code, nick)).catch(() => null).then(r => {
+    if (!profile || profile.id !== nick || !cls || cls.code !== code) return;
+    myPractice = r || { uid: nick, no: "", items: {}, reflect: "", startedAt: 0 };
+    myPractice.items = myPractice.items || {}; if (myPractice.no == null) myPractice.no = ""; if (myPractice.reflect == null) myPractice.reflect = "";
+    if (current === "feed") renderFeed(true);
+    if (current === "mine") renderMine();
+  });
+  return practiceP;
+}
+let practiceTimer = 0;
+function savePractice() {
+  clearTimeout(practiceTimer);
+  practiceTimer = setTimeout(() => {
+    if (!myPractice || !profile || !cls) return;
+    myPractice.uid = profile.id;
+    Promise.resolve(store.setPractice(cls.code, profile.id, JSON.parse(JSON.stringify(myPractice)))).catch(() => toast("저장하지 못했어요. 연결을 확인해 주세요"));
+  }, 500);
+}
+function togglePick(card, el) {
+  if (teacher) return;
+  if (!profile) { toast("먼저 '게시물 올리기'에서 아이디를 만들어 주세요"); return; }
+  practiceP.then(() => {
+    if (!myPractice) return;
+    const id = card.dataset.id, code = card.dataset.code || (cls && cls.code), kind = el.dataset.kind, i = +el.dataset.i;
+    const post = card.closest("#gfeed") ? gCache[gKey(code, id)] : posts[id];
+    if (!post) return;
+    const arr = ((kind === "do" ? post.dos : post.donts) || []).filter(Boolean), text = arr[i];
+    if (!text) return;
+    const ref = code + "/" + id + ":" + kind + i, items = myPractice.items;
+    const ex = Object.keys(items).find(k => items[k].ref === ref);
+    if (ex) { delete items[ex]; toast("실천할 내용에서 뺐어요"); }
+    else {
+      if (Object.keys(items).length >= 5) { toast("실천할 내용은 최대 5개까지 담을 수 있어요"); return; }
+      items["i" + Date.now().toString(36) + Math.random().toString(36).slice(2, 4)] = { ref, text, kind, from: { uid: post.uid || "", code, pid: id }, ts: Date.now(), result: "", reason: "" };
+      if (!myPractice.startedAt) myPractice.startedAt = Date.now();
+      toast("📝 실천할 내용에 담았어요 (" + Object.keys(items).length + "개)");
+    }
+    const on = !ex; el.classList.toggle("on", on); el.textContent = on ? "✔ 실천 담음" : "➕ 실천 담기";
+    savePractice();
+  });
+}
+function renameFlow(oldN) {
+  if (!admin()) return;
+  let nw = prompt("'" + oldN + "'의 새 닉네임을 적어 주세요 (2~10글자)", oldN);
+  if (nw == null) return; nw = nw.trim();
+  if (nw.length < 2 || nw.length > 10) { toast("닉네임은 2~10글자로 적어 주세요"); return; }
+  if (isBad(nw)) { toast(BAD_MSG); return; }
+  if (nw === oldN) return;
+  if (!confirm("이 반에서 '" + oldN + "'(으)로 올린 모든 게시물과 댓글이 '" + nw + "'(으)로 바뀌어요.\n계속할까요?")) return;
+  store.renameNick(cls.code, oldN, nw).then(n => toast("✅ " + n + "곳의 닉네임을 '" + nw + "'(으)로 바꿨어요")).catch(() => toast("바꾸지 못했어요. 연결을 확인해 주세요"));
+}
+/* 선생님이 바꾼 닉네임을 학생 기기에도 반영 */
+function applyRenames() {
+  if (teacher || !profile || !cls) return Promise.resolve();
+  let cur = profile.id, ts = profile.ts || 0, changed = false;
+  const step1 = i => {
+    if (i >= 5) return Promise.resolve();
+    return store.getRename(cls.code, cur).catch(() => null).then(r => {
+      if (!r || !r.to || (r.ts || 0) <= ts) return;
+      cur = r.to; ts = r.ts; changed = true; return step1(i + 1);
+    });
+  };
+  return step1(0).then(() => {
+    if (!changed) return;
+    profile.id = cur; profile.ts = ts; lsSet("insta_profile", profile);
+    if ($("uid")) $("uid").value = cur;
+    toast("선생님이 내 닉네임을 '" + cur + "'(으)로 바꿨어요");
+  });
+}
 let lastTap = 0;
 $("feed").addEventListener("pointerup", e => {
   const pic = e.target.closest('[data-act="dbl"]'); if (!pic || !cls) return;
@@ -745,136 +942,301 @@ document.querySelectorAll("[data-sort]").forEach(b => b.addEventListener("click"
   renderFeed(true);
 }));
 
-/* ---------- 다른 반 구경 + 검색 (학교 · 닉네임 · 해시태그) ---------- */
-let othersTok = 0, otherPosts = {}, otherCode = "", otherSort = "new", otherQ = "", otherPid = null;
-let othersMap = {}, gMode = "all", gQuery = "", indexCache = null, indexAt = 0, indexLoading = false;
+/* ---------- 다른 반 구경: 인스타그램처럼 쫙 (랜덤 · 인기순 · 최신순 + 학교·닉네임·해시태그 검색) ---------- */
+const PAGE = 6;
+let othersMap = {}, gMode = "all", gQuery = "", gSort = "rand", gSeed = (Math.random() * 1e9) | 0;
+let indexCache = null, indexAt = 0, indexLoading = false;
+let gList = [], gShown = 0, gLoading = false, gTok = 0;
+const gCache = {};
+const gKey = (c, id) => c + "/" + id;
+function mulberry(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function setGMore(t) { $("gmoreText").textContent = t; }
+function showMoreBtn() { $("gmoreBtn").style.display = gShown < gList.length ? "" : "none"; }
 function openOthers() {
   showView("others");
   if (unsubOthers) unsubOthers();
-  unsubOthers = store.listClasses(o => { othersMap = o || {}; renderSearch(); });
+  unsubOthers = store.listClasses(o => { othersMap = o || {}; rebuildGlobal(); });
+  loadIndex(true);
 }
-function ensureIndex() {
-  if (indexLoading || (indexCache && Date.now() - indexAt < 30000)) return;
+function loadIndex(force) {
+  if (indexLoading) return;
+  if (!force && indexCache && Date.now() - indexAt < 30000) return;
   indexLoading = true;
   store.getIndex().then(x => { indexCache = x || {}; }).catch(() => { indexCache = indexCache || {}; })
-    .then(() => { indexAt = Date.now(); indexLoading = false; renderSearch(); });
+    .then(() => { indexAt = Date.now(); indexLoading = false; rebuildGlobal(); });
 }
-function renderSearch() {
-  const q = normQ(gQuery);
-  const entries = Object.entries(othersMap).filter(([c]) => !cls || c !== cls.code)
-    .sort((a, b) => clsLabel(a[1]).localeCompare(clsLabel(b[1]), "ko"));
-  const wantPosts = !!q && gMode !== "school";
-  const wantClasses = !q || gMode === "all" || gMode === "school";
-  let html = "";
-  if (wantPosts) {
-    ensureIndex();
-    html += `<h3 class="sec" style="margin-top:6px">🔎 게시물 검색 결과</h3>`;
-    if (!indexCache) html += `<p class="hint">찾는 중이에요...</p>`;
-    else {
-      const rows = [];
-      Object.keys(indexCache).forEach(code => {
-        const m = othersMap[code]; if (!m || (cls && code === cls.code)) return;
-        Object.entries(indexCache[code] || {}).forEach(([pid, p]) => {
-          const byNick = gMode !== "tag" && String(p.uid || "").toLowerCase().includes(q);
-          const byTag = gMode !== "nick" && (p.tags || []).some(t => String(t).toLowerCase().includes(q));
-          if (byNick || byTag) rows.push({ code, pid, m, p });
-        });
-      });
-      rows.sort((a, b) => (b.p.ts || 0) - (a.p.ts || 0));
-      if (!rows.length) html += `<p class="hint">'${esc(gQuery.trim())}'이(가) 들어간 닉네임이나 해시태그를 찾지 못했어요.</p>`;
-      else {
-        html += rows.slice(0, 40).map(r => `
-          <div class="cls"><div style="min-width:0"><div class="cn">🙂 ${esc(r.p.uid)}</div>
-          <div class="sm">${esc(clsLabel(r.m))}${(r.p.tags || []).length ? " · " + r.p.tags.map(t => "#" + esc(t)).join(" ") : ""}${r.p.ts ? " · " + ago(r.p.ts) : ""}</div></div>
-          <div class="cb"><button class="go" data-oc="${esc(r.code)}" data-on="${esc(clsLabel(r.m))}" data-pid="${esc(r.pid)}">보기</button></div></div>`).join("");
-        if (rows.length > 40) html += `<p class="hint">결과가 ${rows.length}개예요. 40개만 보여 줘요. 더 자세히 검색해 보세요.</p>`;
+function rebuildGlobal() {
+  gTok++; gList = []; gShown = 0; gLoading = false;
+  $("gfeed").innerHTML = ""; $("gmoreBtn").style.display = "none";
+  if (!indexCache) { setGMore("불러오는 중이에요..."); return; }
+  const q = normQ(gQuery), M = gMode;
+  const pool = [];
+  Object.keys(indexCache).forEach(code => {
+    const m = othersMap[code]; if (!m || (cls && code === cls.code)) return;
+    const label = clsLabel(m), lab = label.toLowerCase();
+    Object.entries(indexCache[code] || {}).forEach(([pid, p]) => {
+      if (!p || !p.uid) return;
+      if (q) {
+        const bySchool = (M === "all" || M === "school") && lab.includes(q);
+        const byNick = (M === "all" || M === "nick") && String(p.uid).toLowerCase().includes(q);
+        const byTag = (M === "all" || M === "tag") && (p.tags || []).some(t => String(t).toLowerCase().includes(q));
+        if (!(bySchool || byNick || byTag)) return;
       }
-    }
+      pool.push({ code, pid, label, ts: p.ts || 0, likes: p.likes || 0 });
+    });
+  });
+  if (gSort === "hot") pool.sort((a, b) => b.likes - a.likes || b.ts - a.ts);
+  else if (gSort === "new") pool.sort((a, b) => b.ts - a.ts);
+  else {
+    pool.sort((a, b) => (a.code + a.pid < b.code + b.pid ? -1 : 1));
+    const r = mulberry(gSeed);
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
   }
-  let list = entries;
-  if (wantClasses) {
-    if (q && gMode !== "nick" && gMode !== "tag") list = entries.filter(([, m]) => clsLabel(m).toLowerCase().includes(q));
-    if (q) html += `<h3 class="sec">🏫 학교·반 검색 결과</h3>`;
-    if (!list.length) html += q ? `<p class="hint">'${esc(gQuery.trim())}'가 들어간 학교나 반을 찾지 못했어요.</p>` : `<div class="empty"><div class="big">🌏</div>아직 구경할 다른 반이 없어요.</div>`;
-    else html += list.map(([code, m]) => `
-      <div class="cls"><div style="min-width:0"><div class="cn">🏫 ${esc(clsLabel(m))}</div><div class="sm">게시물 <b data-ocnt="${esc(code)}">…</b>개</div></div>
-      <div class="cb"><button class="go" data-oc="${esc(code)}" data-on="${esc(clsLabel(m))}">구경하기</button></div></div>`).join("");
+  gList = pool;
+  if (!pool.length) {
+    $("gfeed").innerHTML = q
+      ? `<div class="empty"><div class="big">🔎</div>'${esc(gQuery.trim())}' 검색 결과가 없어요.<br>학교 이름, 닉네임, 해시태그를 다시 확인해 보세요.</div>`
+      : `<div class="empty"><div class="big">🌏</div>아직 다른 반 게시물이 없어요.<br>친구들이 올리면 여기에 쫙 나타나요!</div>`;
+    setGMore(""); return;
   }
-  $("othersList").innerHTML = html;
-  const tok = ++othersTok;
-  if (wantClasses) list.forEach(([code]) => store.countPosts(code).catch(() => null).then(n => {
-    if (tok !== othersTok) return;
-    const el = $("othersList").querySelector('[data-ocnt="' + code + '"]');
-    if (el) el.textContent = n == null ? "?" : n;
-  }));
+  loadMore();
 }
+function loadMore() {
+  if (gLoading || gShown >= gList.length) return;
+  gLoading = true; const tok = gTok; setGMore("불러오는 중이에요...");
+  const batch = gList.slice(gShown, gShown + PAGE); gShown += PAGE;
+  Promise.all(batch.map(it => {
+    const k = gKey(it.code, it.pid); if (gCache[k]) return Promise.resolve(gCache[k]);
+    return store.getPost(it.code, it.pid).then(p => { if (p) gCache[k] = p; return p; }).catch(() => null);
+  })).then(posts => {
+    if (tok !== gTok) return;
+    const html = batch.map((it, i) => posts[i] ? cardHtml(posts[i], it.pid, { readonly: true, code: it.code, label: it.label, canDel: isAdmin }) : "").join("");
+    $("gfeed").insertAdjacentHTML("beforeend", html);
+    gLoading = false;
+    if (gShown >= gList.length) { setGMore($("gfeed").children.length ? "여기까지예요 🎉  새로고침하면 새로 섞여요" : ""); showMoreBtn(); }
+    else {
+      setGMore(""); showMoreBtn();
+      if (!html || ($("gmore").getBoundingClientRect().top < window.innerHeight + 500 && current === "others")) setTimeout(loadMore, 30);
+    }
+  });
+}
+if ("IntersectionObserver" in window) new IntersectionObserver(es => { if (es[0].isIntersecting && current === "others") loadMore(); }, { rootMargin: "600px" }).observe($("gmore"));
+$("gmoreBtn").onclick = loadMore;
+
+/* 검색 · 정렬 */
 const GM_HINT = { all: "🔎 학교 · 닉네임 · #해시태그로 찾기", school: "🔎 학교 이름이나 반 이름", nick: "🔎 친구 닉네임", tag: "🔎 해시태그 (예: 배려)" };
 let gTimer = 0;
 $("gq").addEventListener("input", e => {
   gQuery = e.target.value; $("gqx").style.display = gQuery ? "" : "none";
-  clearTimeout(gTimer); gTimer = setTimeout(renderSearch, 150);
+  clearTimeout(gTimer); gTimer = setTimeout(rebuildGlobal, 200);
 });
-$("gqx").onclick = () => { gQuery = ""; $("gq").value = ""; $("gqx").style.display = "none"; renderSearch(); };
+$("gqx").onclick = () => { gQuery = ""; $("gq").value = ""; $("gqx").style.display = "none"; rebuildGlobal(); };
 document.querySelectorAll("[data-gm]").forEach(b => b.addEventListener("click", () => {
   gMode = b.dataset.gm; $("gq").placeholder = GM_HINT[gMode];
   document.querySelectorAll("[data-gm]").forEach(x => x.classList.toggle("on", x === b));
-  renderSearch();
+  rebuildGlobal();
 }));
-$("othersList").addEventListener("click", e => {
-  const b = e.target.closest("[data-oc]"); if (b) openOther(b.dataset.oc, b.dataset.on, b.dataset.pid);
-});
-function openOther(code, label, pid) {
-  showView("other");
-  $("otherTitle").textContent = "🏫 " + label;
-  otherCode = code; otherPosts = {}; otherSort = "new"; otherPid = pid || null; otherQ = ""; $("otherQ").value = ""; $("otherQx").style.display = "none";
-  document.querySelectorAll("[data-osort]").forEach(x => x.classList.toggle("on", x.dataset.osort === "new"));
-  renderOther();
-  unsubOther = store.subscribe(code, o => { otherPosts = o || {}; renderOther(); });
-}
-function renderOther() {
-  $("otherBanner").style.display = otherPid ? "" : "none";
-  const all = Object.entries(otherPosts);
-  if (!all.length) { $("otherFeed").innerHTML = `<div class="empty"><div class="big">📷</div>아직 올라온 게시물이 없어요.</div>`; return; }
-  const maxLike = Math.max(...all.map(([, p]) => p.likes || 0));
-  let arr = all;
-  if (otherPid) arr = all.filter(([id]) => id === otherPid);
-  else if (normQ(otherQ)) arr = all.filter(([, p]) => matchPost(p, otherQ));
-  if (!arr.length) { $("otherFeed").innerHTML = `<div class="empty"><div class="big">🔎</div>${otherPid ? "검색한 게시물을 찾지 못했어요.<br>오래된 게시물일 수 있어요." : "검색 결과가 없어요."}</div>`; return; }
-  arr.sort((a, b) => otherSort === "hot"
-    ? ((b[1].likes || 0) - (a[1].likes || 0)) || (b[1].ts - a[1].ts)
-    : b[1].ts - a[1].ts);
-  $("otherFeed").innerHTML = arr.map(([id, p]) => cardHtml(p, id, { readonly: true, hot: maxLike > 0 && (p.likes || 0) === maxLike })).join("");
-}
-$("otherAll").onclick = () => { otherPid = null; renderOther(); };
-$("otherQ").addEventListener("input", e => { otherQ = e.target.value; otherPid = null; $("otherQx").style.display = otherQ ? "" : "none"; renderOther(); });
-$("otherQx").onclick = () => { otherQ = ""; $("otherQ").value = ""; $("otherQx").style.display = "none"; renderOther(); };
-$("otherBack").onclick = openOthers;
-document.querySelectorAll("[data-osort]").forEach(b => b.addEventListener("click", () => {
-  otherSort = b.dataset.osort;
-  document.querySelectorAll("[data-osort]").forEach(x => x.classList.toggle("on", x === b));
-  renderOther();
+document.querySelectorAll("[data-gs]").forEach(b => b.addEventListener("click", () => {
+  if (b.dataset.gs === "rand" && gSort === "rand") gSeed = (Math.random() * 1e9) | 0;
+  gSort = b.dataset.gs;
+  document.querySelectorAll("[data-gs]").forEach(x => x.classList.toggle("on", x === b));
+  rebuildGlobal();
 }));
-$("otherFeed").addEventListener("click", e => {
-  const el = e.target.closest('[data-act="like"]'); if (!el || !otherCode) return;
-  const card = el.closest(".card"), id = card.dataset.id;
-  if (!liked.has(id)) heartPop(card);
-  doLike(id, otherCode, renderOther);
-});
-let lastTapO = 0;
-$("otherFeed").addEventListener("pointerup", e => {
-  const pic = e.target.closest('[data-act="dbl"]'); if (!pic || !otherCode) return;
-  const now = Date.now();
-  if (now - lastTapO < 350) {
-    const card = pic.closest(".card"), id = card.dataset.id;
-    heartPop(card); if (!liked.has(id)) doLike(id, otherCode, renderOther);
+$("gRefresh").onclick = () => { gSeed = (Math.random() * 1e9) | 0; Object.keys(gCache).forEach(k => delete gCache[k]); loadIndex(true); toast("새로 불러왔어요"); };
+
+/* 하트(좋아요만) · 관리자 삭제 */
+function gLike(card) {
+  const code = card.dataset.code, id = card.dataset.id, k = gKey(code, id), was = liked.has(id);
+  if (was) liked.delete(id); else liked.add(id);
+  lsSet("insta_liked", [...liked]);
+  const d = was ? -1 : 1; store.like(code, id, d);
+  const p = gCache[k]; if (p) p.likes = Math.max(0, (p.likes || 0) + d);
+  const it = gList.find(x => x.code === code && x.pid === id); if (it) it.likes = Math.max(0, it.likes + d);
+  const h = card.querySelector(".heart"); if (h) { h.classList.toggle("on", !was); h.textContent = was ? "🤍" : "❤️"; }
+  const lk = card.querySelector(".lk"); if (lk) lk.textContent = "좋아요 " + (p ? p.likes || 0 : 0) + "개";
+}
+$("gfeed").addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const card = el.closest(".card"); if (!card) return;
+  const code = card.dataset.code, id = card.dataset.id, act = el.dataset.act;
+  if (act === "like") { if (!liked.has(id)) heartPop(card); gLike(card); }
+  else if (act === "pick") togglePick(card, el);
+  else if (act === "more") { expanded.add(id); card.outerHTML = cardHtml(gCache[gKey(code, id)], id, { readonly: true, code, label: (gList.find(x => x.code === code && x.pid === id) || {}).label, canDel: isAdmin }); }
+  else if (act === "del" && isAdmin) {
+    if (confirm("이 게시물을 삭제할까요?")) store.removePost(code, id).then(() => { card.remove(); delete gCache[gKey(code, id)]; toast("게시물을 삭제했어요"); });
+  } else if (act === "delc" && isAdmin) {
+    if (confirm("이 댓글을 삭제할까요?")) store.removeComment(code, id, el.dataset.cid).then(() => store.getPost(code, id)).then(p => {
+      if (p) { gCache[gKey(code, id)] = p; card.outerHTML = cardHtml(p, id, { readonly: true, code, label: (gList.find(x => x.code === code && x.pid === id) || {}).label, canDel: isAdmin }); }
+      toast("댓글을 삭제했어요");
+    });
   }
-  lastTapO = now;
+});
+let lastTapG = 0;
+$("gfeed").addEventListener("pointerup", e => {
+  const pic = e.target.closest('[data-act="dbl"]'); if (!pic) return;
+  const now = Date.now();
+  if (now - lastTapG < 350) { const card = pic.closest(".card"); heartPop(card); if (!liked.has(card.dataset.id)) gLike(card); }
+  lastTapG = now;
+});
+
+/* ---------- 내 수행 (학생): ① 안내문 만들기 → ② 실천할 내용 고르기 → ③ 일주일 실천·반성 ---------- */
+const RES = [["good", "😄 잘 실천했어요"], ["some", "🙂 조금 실천했어요"], ["none", "😅 실천하지 못했어요"]];
+const RES_L = { good: "😄 잘 실천", some: "🙂 조금 실천", none: "😅 실천 못함" };
+const mdate = ts => { const d = new Date(ts); return (d.getMonth() + 1) + "/" + d.getDate(); };
+function bestPost(list) {
+  if (!list || !list.length) return null;
+  return list.slice().sort((a, b) => ((b.dos || []).length + (b.donts || []).length) - ((a.dos || []).length + (a.donts || []).length) || (b.ts || 0) - (a.ts || 0))[0];
+}
+function openMine() { showView("mine"); renderMine(); practiceP.then(() => { if (current === "mine") renderMine(); }); }
+function renderMine() {
+  const box = $("mineBody");
+  if (!profile) { box.innerHTML = `<div class="empty"><div class="big">📝</div>먼저 나만의 아이디를 만들어야 해요.<button class="btn" data-m="post">✍ 게시물 올리기로 가기</button></div>`; return; }
+  if (!myPractice) { box.innerHTML = `<div class="empty"><div class="big">⏳</div>불러오는 중이에요...</div>`; return; }
+  const rec = myPractice;
+  const mine = Object.values(posts).filter(p => p.uid === profile.id && (Array.isArray(p.dos) || Array.isArray(p.donts)));
+  const best = bestPost(mine);
+  const items = Object.entries(rec.items || {}).sort((a, b) => (a[1].ts || 0) - (b[1].ts || 0));
+  const week = rec.startedAt ? "실천 시작 " + mdate(rec.startedAt) + " → 일주일 뒤 " + mdate(rec.startedAt + 7 * 86400000) : "";
+  box.innerHTML = `
+  <div class="sec2"><h3>🙂 ${esc(profile.id)}의 인권 보호 안내문 수행</h3>
+    <div class="hint">번호를 적어 두면 선생님이 확인할 수 있어요.</div>
+    <input class="t" id="mNo" maxlength="3" inputmode="numeric" placeholder="번호 (예: 12)" value="${esc(rec.no || "")}" style="max-width:160px"></div>
+  <div class="sec2"><h3><span class="numb">1</span>우리 모두의 인권을 지키는 안내문 만들기</h3>
+    ${best ? `<div class="okbox">✅ 인권 보호 안내문을 만들었어요!<br>( ${esc(best.title || "")} ) 인권 보호 안내문<br>이렇게 해 주세요 ${(best.dos || []).length}개 · 이렇게 하지 말아요 ${(best.donts || []).length}개</div>` : `<div class="warnbox">아직 안내문을 올리지 않았어요.</div>`}
+    <button class="btn" data-m="post">${best ? "✍ 안내문 하나 더 만들기" : "✍ 안내문 만들러 가기"}</button></div>
+  <div class="sec2"><h3><span class="numb">2</span>친구들 안내문을 보고 실천할 내용 고르기</h3>
+    <p class="hint">친구들의 안내문에서 마음에 드는 약속 옆 '➕ 실천 담기'를 눌러요. (3가지 이상, 최대 5개)</p>
+    ${items.length ? items.map(([k, it]) => `<div class="chosen"><div class="tx">◆ ${esc(it.text)}<button class="rm" data-m="rm" data-k="${esc(k)}">빼기</button></div><div class="fm">${it.kind === "do" ? "◉ 이렇게 해 주세요" : "※ 이렇게 하지 말아요"} · ${esc((it.from && it.from.uid) || "")} 친구의 안내문</div></div>`).join("") : `<div class="warnbox">아직 담은 내용이 없어요.</div>`}
+    <div class="rec" style="margin-top:6px">${items.length}개 담음 (3개 이상 담아요)</div>
+    <div class="arow" style="margin-top:8px"><button class="chip" data-m="feed">🏠 우리 반 피드 보러 가기</button><button class="chip" data-m="others">🌏 다른 반 구경하기</button></div></div>
+  <div class="sec2"><h3><span class="numb">3</span>일주일 동안 실천하고 반성하기</h3>
+    ${week ? `<p class="hint">${week}</p>` : `<p class="hint">②에서 실천할 내용을 담으면 일주일 실천이 시작돼요.</p>`}
+    ${items.map(([k, it]) => `<div class="chosen"><div class="tx">◆ ${esc(it.text)}</div>
+      <div class="rs">${RES.map(([v, l]) => `<button data-m="res" data-k="${esc(k)}" data-v="${v}" class="${it.result === v ? "on" : ""}">${l}</button>`).join("")}</div>
+      <input class="t mReason" data-k="${esc(k)}" maxlength="60" placeholder="그 이유는? (예: 쉬는 시간마다 떠올려서 지켰어요)" value="${esc(it.reason || "")}"></div>`).join("")}
+    <div class="q">✍ 일주일 동안 실천하고 느낀 점을 솔직하게 써 봅시다.</div>
+    <textarea class="t" id="mReflect" rows="4" maxlength="300" placeholder="잘한 점, 어려웠던 점, 앞으로 더 노력할 점을 써 보세요.">${esc(rec.reflect || "")}</textarea>
+    <div class="hint" style="margin-top:6px">쓰는 대로 자동으로 저장돼요 💾</div></div>`;
+}
+$("mineBody").addEventListener("click", e => {
+  const b = e.target.closest("[data-m]"); if (!b) return;
+  const m = b.dataset.m;
+  if (m === "post") $("tabPost").click();
+  else if (m === "feed") $("tabFeed").click();
+  else if (m === "others") openOthers();
+  else if ((m === "rm" || m === "res") && myPractice) {
+    const it = myPractice.items[b.dataset.k]; if (!it && m === "res") return;
+    if (m === "rm") { delete myPractice.items[b.dataset.k]; savePractice(); renderMine(); }
+    else { it.result = b.dataset.v; b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); savePractice(); }
+  }
+});
+$("mineBody").addEventListener("input", e => {
+  const t = e.target; if (!myPractice) return;
+  if (t.id === "mNo") { t.value = t.value.replace(/\D/g, "").slice(0, 3); myPractice.no = t.value; savePractice(); }
+  else if (t.classList.contains("mReason")) {
+    const it = myPractice.items[t.dataset.k]; if (!it) return;
+    if (isBad(t.value)) { toast(BAD_MSG); t.value = it.reason || ""; return; }
+    it.reason = t.value; savePractice();
+  } else if (t.id === "mReflect") {
+    if (isBad(t.value)) { toast(BAD_MSG); t.value = myPractice.reflect || ""; return; }
+    myPractice.reflect = t.value; savePractice();
+  }
+});
+
+/* ---------- 수행평가 현황 (교사) ---------- */
+let aPractice = {}, aScores = {};
+function autoS1(post) {
+  if (!post) return 0;
+  const d = (post.dos || []).filter(Boolean), n = (post.donts || []).filter(Boolean);
+  if (!d.length && !n.length) return 0;
+  if (!d.length || !n.length) return 1;
+  const detail = d.concat(n).filter(t => t.length >= 8).length;
+  return (d.length >= 2 && n.length >= 2 && detail >= 3) ? 3 : 2;
+}
+function autoS2(rec) { return Math.min(3, Object.keys((rec && rec.items) || {}).length); }
+function autoS3(rec) {
+  const items = Object.values((rec && rec.items) || {}); if (!items.length) return 0;
+  const refl = String(rec.reflect || "").trim().length;
+  const filled = items.filter(it => it.result && String(it.reason || "").trim().length >= 4);
+  const effort = items.filter(it => it.result === "good" || it.result === "some");
+  if (!filled.length && !refl) return 0;
+  if (!effort.length) return 1;
+  if (filled.length === items.length && refl >= 20 && items.filter(it => it.result === "good").length >= Math.ceil(items.length / 2)) return 3;
+  return 2;
+}
+function assessRows() {
+  const by = {};
+  Object.values(aPractice || {}).forEach(r => { if (r && r.uid) (by[r.uid] = by[r.uid] || {}).rec = r; });
+  Object.values(posts).forEach(p => { if ((Array.isArray(p.dos) || Array.isArray(p.donts)) && p.uid) { const o = (by[p.uid] = by[p.uid] || {}); (o.posts = o.posts || []).push(p); } });
+  return Object.keys(by).sort((a, b) => a.localeCompare(b, "ko")).map(uid => {
+    const o = by[uid], rec = o.rec || null, best = bestPost(o.posts), sc = (aScores || {})[encNick(uid)] || {};
+    const a = [autoS1(best), autoS2(rec), autoS3(rec)];
+    const f = [sc.s1 != null ? sc.s1 : a[0], sc.s2 != null ? sc.s2 : a[1], sc.s3 != null ? sc.s3 : a[2]];
+    return { uid, rec, best, sc, a, f, total: f[0] + f[1] + f[2] };
+  });
+}
+function openAssess() {
+  if (!cls) return;
+  showView("assess");
+  if (unsubAssess) unsubAssess();
+  const u1 = store.subscribePractice(cls.code, o => { aPractice = o || {}; if (current === "assess") renderAssess(); });
+  const u2 = store.subscribeScores(cls.code, o => { aScores = o || {}; if (current === "assess") renderAssess(); });
+  unsubAssess = () => { u1(); u2(); };
+  renderAssess();
+}
+function renderAssess() {
+  const box = $("assessBody"); if (!cls) return;
+  const rows = assessRows();
+  const sg = (uid, k, a, f) => `<div class="sg" data-uid="${esc(uid)}" data-k="${k}">${[0, 1, 2, 3].map(v => `<button data-v="${v}" class="${f === v ? "on" : ""}">${v}점</button>`).join("")}<span class="rec">추천 ${a}점</span></div>`;
+  box.innerHTML = `
+  <div class="sec2"><h3>📋 수행평가 현황 · '인권 보호 안내문' 만들고 실천하기</h3>
+    <div class="hint">(1) 안내문 만들기 · (2) 친구 안내문에서 실천할 내용 고르기 · (3) 일주일 실천 후 반성. 추천 점수는 자동 계산이에요. 구체성과 솔직함은 선생님이 판단해서 점수 버튼으로 확정해 주세요.</div>
+    <div class="arow"><button class="chip" data-a="auto">📌 추천 점수로 모두 확정</button><button class="chip" data-a="csv">📥 엑셀(CSV)로 내려받기</button></div>
+    <div class="rec">학생 ${rows.length}명 · 같은 닉네임은 한 명으로 합쳐져요.</div></div>
+  ${rows.length ? rows.map(r => {
+    const items = Object.values((r.rec && r.rec.items) || {}).sort((a, b) => (a.ts || 0) - (b.ts || 0));
+    const b = r.best;
+    return `<div class="asc"><div class="ah"><b>🙂 ${esc(r.uid)}</b>${r.rec && r.rec.no ? `<span class="rec">${esc(r.rec.no)}번</span>` : ""}<span class="tot">${r.total}/9점</span></div>
+      <div class="ab"><b class="k">① 안내문 만들기</b><br>${b ? `( ${esc(b.title || "")} ) 인권 보호 안내문<br>◉ ${(b.dos || []).map(esc).join(" / ") || "-"}<br>※ ${(b.donts || []).map(esc).join(" / ") || "-"}` : `<span class="rec">올린 안내문이 없어요</span>`}${sg(r.uid, "s1", r.a[0], r.f[0])}</div>
+      <div class="ab"><b class="k">② 실천할 내용 고르기 (${items.length}개)</b><br>${items.length ? items.map(it => "◆ " + esc(it.text) + ' <span class="rec">(' + esc((it.from && it.from.uid) || "") + " 친구)</span>").join("<br>") : `<span class="rec">담은 내용이 없어요</span>`}${sg(r.uid, "s2", r.a[1], r.f[1])}</div>
+      <div class="ab"><b class="k">③ 일주일 실천·반성</b>${r.rec && r.rec.startedAt ? ` <span class="rec">(${mdate(r.rec.startedAt)} 시작)</span>` : ""}<br>${items.length ? items.map(it => "◆ " + esc(it.text) + "<br>&nbsp;&nbsp;→ " + (RES_L[it.result] || "미입력") + (it.reason ? " · " + esc(it.reason) : "")).join("<br>") : `<span class="rec">-</span>`}${r.rec && r.rec.reflect ? `<br>✍ ${esc(r.rec.reflect)}` : ""}${sg(r.uid, "s3", r.a[2], r.f[2])}</div></div>`;
+  }).join("") : `<div class="empty"><div class="big">📋</div>아직 안내문을 올린 학생이 없어요.</div>`}`;
+}
+function setScoreFor(uid, k, v) {
+  const key = encNick(uid), sc = Object.assign({}, (aScores || {})[key] || {});
+  sc[k] = v; sc.ts = Date.now(); aScores[key] = sc;
+  Promise.resolve(store.setScore(cls.code, uid, sc)); renderAssess();
+}
+function exportCsv() {
+  const head = ["닉네임", "번호", "안내문 제목", "이렇게 해 주세요", "이렇게 하지 말아요", "실천할 내용 수", "실천할 내용", "실천 결과·이유", "반성 소감", "①안내문", "②실천 선택", "③반성", "합계"];
+  const rows = assessRows().map(r => {
+    const items = Object.values((r.rec && r.rec.items) || {}).sort((a, b) => (a.ts || 0) - (b.ts || 0)), b = r.best;
+    return [r.uid, (r.rec && r.rec.no) || "", b ? b.title || "" : "", b ? (b.dos || []).join(" / ") : "", b ? (b.donts || []).join(" / ") : "",
+      items.length, items.map(it => it.text).join(" / "), items.map(it => (RES_L[it.result] || "미입력") + (it.reason ? ":" + it.reason : "")).join(" / "),
+      (r.rec && r.rec.reflect) || "", r.f[0], r.f[1], r.f[2], r.total];
+  });
+  const csv = "\uFEFF" + [head].concat(rows).map(r => r.map(c => '"' + String(c == null ? "" : c).replace(/"/g, '""') + '"').join(",")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = "인권보호안내문_수행평가_" + clsLabel(cls).replace(/\s+/g, "_") + ".csv";
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  toast("📥 CSV 파일을 내려받았어요");
+}
+$("assessBody").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.a === "csv") exportCsv();
+  else if (b.dataset.a === "auto") {
+    if (!confirm("모든 학생의 점수를 추천 점수로 확정할까요?\n이미 직접 정한 점수도 추천 점수로 바뀌어요.")) return;
+    assessRows().forEach(r => { const sc = { s1: r.a[0], s2: r.a[1], s3: r.a[2], ts: Date.now() }; aScores[encNick(r.uid)] = sc; store.setScore(cls.code, r.uid, sc); });
+    renderAssess(); toast("✅ 추천 점수로 확정했어요");
+  } else if (b.closest(".sg")) { const g = b.closest(".sg"); setScoreFor(g.dataset.uid, g.dataset.k, +b.dataset.v); }
 });
 
 /* ---------- 탭 ---------- */
 $("tabFeed").onclick = () => { showView("feed"); renderFeed(true); };
 $("tabPost").onclick = () => { showView("post"); showStep(step); };
 $("tabOthers").onclick = openOthers;
+$("tabMine").onclick = () => (teacher ? openAssess() : openMine());
 
 /* ---------- 올리기 위자드 ---------- */
 let step = 0;
@@ -1325,7 +1687,9 @@ function buildPost() {
     avatar: { emoji: draft.emoji, color: draft.color },
     img: cv.toDataURL("image/jpeg", .6),
     tags: draft.tags.slice(),
-    who: $("who").value.trim(), why: $("why").value.trim(),
+    title: $("gtitle").value.trim(),
+    dos: ["do1", "do2", "do3"].map(i => $(i).value.trim()).filter(Boolean),
+    donts: ["dont1", "dont2", "dont3"].map(i => $(i).value.trim()).filter(Boolean),
     ts: Date.now(), likes: 0
   };
   if (link) p.link = link;
@@ -1336,14 +1700,19 @@ function validate(n) {
     const v = $("uid").value.trim();
     if (v.length < 2) return "아이디를 2글자 이상 적어 주세요.";
     if (isBad(v)) return BAD_MSG;
-    profile = { id: v, emoji: draft.emoji, color: draft.color }; lsSet("insta_profile", profile);
+    const prevId = profile && profile.id;
+    profile = { id: v, emoji: draft.emoji, color: draft.color, ts: (profile && profile.id === v) ? (profile.ts || 0) : Date.now() }; lsSet("insta_profile", profile);
+    if (prevId !== v) { myPractice = null; loadMyPractice(); }
   }
   if (n === 1 && !draft.drawn) return "인권을 존중하는 모습을 그리거나 사진을 불러와 주세요.";
   if (n === 2 && draft.tags.length < 1) return "해시태그를 1개 이상 골라 주세요.";
   if (n === 3) {
-    if ($("who").value.trim().length < 5) return "'누구의 어떤 인권'을 5글자 이상 써 주세요.";
-    if ($("why").value.trim().length < 5) return "'소개하는 이유'를 5글자 이상 써 주세요.";
-    if (isBad($("who").value) || isBad($("why").value)) return BAD_MSG;
+    const title = $("gtitle").value.trim();
+    const dosV = ["do1", "do2", "do3"].map(i => $(i).value.trim()).filter(Boolean), dontsV = ["dont1", "dont2", "dont3"].map(i => $(i).value.trim()).filter(Boolean);
+    if ([title, ...dosV, ...dontsV].some(isBad)) return BAD_MSG;
+    if (title.length < 2) return "안내문 제목(어디에 대한 안내문인지)을 2글자 이상 적어 주세요.";
+    if (dosV.length < 2 || dosV.some(t => t.length < 4)) return "'이렇게 해 주세요'를 2개 이상, 각각 4글자 이상 써 주세요.";
+    if (dontsV.length < 2 || dontsV.some(t => t.length < 4)) return "'이렇게 하지 말아요'를 2개 이상, 각각 4글자 이상 써 주세요.";
     if (normLink($("link").value) === null) return "링크 주소가 올바르지 않아요. (예: https://www.example.com)";
   }
   return "";
@@ -1355,13 +1724,13 @@ $("btnNext").onclick = () => {
   if (step < 4) { showStep(step + 1); return; }
   if (!cls) { toast("반에 먼저 입장해 주세요"); return; }
   const post = buildPost();
-  if ([post.uid, post.who, post.why, ...post.tags].some(isBad)) { $("err").textContent = BAD_MSG; return; }
+  if ([post.uid, post.title, ...post.dos, ...post.donts, ...post.tags].some(isBad)) { $("err").textContent = BAD_MSG; return; }
   $("btnNext").disabled = true;
   Promise.resolve(store.add(cls.code, post)).then(() => {
     $("btnNext").disabled = false;
     toast("🎉 인권스타그램에 올렸어요!");
     resetStudio(); draft.tags = [];
-    $("who").value = ""; $("why").value = ""; $("link").value = ""; step = 0;
+    ["gtitle", "do1", "do2", "do3", "dont1", "dont2", "dont3", "link"].forEach(i => { $(i).value = ""; }); step = 0;
     sortMode = "new"; document.querySelectorAll("[data-sort]").forEach(x => x.classList.toggle("on", x.dataset.sort === "new"));
     showView("feed"); renderFeed(true);
   }).catch(() => { toast("올리지 못했어요. 다시 시도해 주세요"); $("btnNext").disabled = false; });
